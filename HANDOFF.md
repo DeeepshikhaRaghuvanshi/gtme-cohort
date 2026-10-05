@@ -136,6 +136,14 @@ https://drive.google.com/drive/folders/1xJu8MQoRouZqeaNaBxRTyJzww5tqjRrN
 - **Headless Chromium:** always pass the keyring-safe flags from the global CLAUDE.md.
 - **faster-whisper** runs on the GPU (GTX 1650 Ti 4 GB) with medium.en int8_float16.
 
+## 7b. Remote access for Deepu (Abi's WSL machine)
+- A separate Linux user **`deepu`** runs a **VS Code tunnel** named `saffron-gtm`, as the systemd service `code-tunnel-deepu`.
+- How Deepu connects: vscode.dev or VS Code → Remote Explorer → Tunnels, signed in with her GitHub.
+- She sees only `/home/deepu`, which holds her own clone at `/home/deepu/gtme-cohort`. Abi's home is 750.
+- The two clones sync through GitHub: pull before work, push after.
+- Set up with `sudo bash scripts/setup_remote_user.sh`, then `sudo -iu deepu code tunnel user login --provider github`, then `sudo systemctl enable --now code-tunnel-deepu`.
+- It only works while the Windows PC is on and WSL is running. Claude Code in her terminal uses her own Claude login.
+
 ## 8. Open items
 **For Deepu:**
 - Share Strategy Doc v2 with Yogesh; paste the TAM/SAM/SOM screenshots from Build Evidence.
