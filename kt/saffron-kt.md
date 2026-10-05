@@ -1,5 +1,8 @@
 # Saffron KT
 
+## 000 · Newest: D37–D38 (5 Oct): micro-campaigns + HeyReach
+Micro-campaigns beat mass AI personalization. HeyReach automates the LinkedIn sequences: max 25 connection requests and 40 messages a day, ~750 a month split into 4 test campaigns. Fix your profile and post thought leadership before outreach. LinkedIn gets ~30% replies vs 1–4% for email. Segment by context, not title. **Your homework:** the Saffron × CHRO HeyReach campaign, configured but not live. The guide is in Drive: "Homework - D37-D38 HeyReach CHRO Campaign".
+
 ## Course video: chapters
 
 Drive: "Saffron - Course Summary Video" (37.8 min, Days 1–36)

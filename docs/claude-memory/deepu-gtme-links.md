@@ -12,6 +12,8 @@ metadata:
   - Course video: file id 1QRCvu_BWdcr9HMB9yA7XQzd65-vm4-Fh (keep the filename "Saffron - Course Summary Video.mp4" so the link survives re-uploads)
   - KT Pack doc: 1iRNGee02RezXl-XNMse0UaERIm-fb9Q7cjOSkUqmxWY
   - Delivery sheet: 1GYHrImz2G2mTps-sG9iZRxIKlayI84voEAyA3on5djY
+  - Homework D37–38 HeyReach CHRO doc: 10ArxuLqzYtNZMVl3LPMO-VCoKLGuc4d0vmNHjAZoeSA
+  - HANDOFF doc: 1ySxKAbFhf21HnWZ-i84lG1QbTSZ7FEJzie4M2yS_AkE
   - LinkedIn post doc: 1DF_4a26ABSIbOnAaFQHY0WYbHyjxwp4HP_T-0NejyBM
   - Deepu's v1 strategy doc (never overwrite): 1NKbR5ueSy7KNkYj2psqqIeyNpYA1q2r31dAb_uQU7gQ
 - **Course folder** (Yogesh's, shared to her personal account): 1xJu8MQoRouZqeaNaBxRTyJzww5tqjRrN
@@ -22,4 +24,5 @@ metadata:
 - **rclone remotes:**
   - `deepshikhagtme:`: full scope; deliverables go into "GTM Cohort Catch-up"; copy only, never sync or delete.
   - `deepu-personal-ro:`: read-only on ddeepshikha.raghuvanshi; use with `--drive-root-folder-id 1xJu8MQoRouZqeaNaBxRTyJzww5tqjRrN`.
+- **GitHub repo (private):** git@github.com:DeeepshikhaRaghuvanshi/gtme-cohort.git (SSH, Deepu key via includeIf)
 - **Local workspace:** ~/workspace/deepu/gtme-cohort (start with HANDOFF.md). Related: [[deepu-gtme-catchup]]

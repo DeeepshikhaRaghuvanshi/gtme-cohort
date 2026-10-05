@@ -1,6 +1,6 @@
 # HANDOFF: Deepu's GTM Engineering cohort catch-up
 
-Read this first in any new session. It's the single source of truth for what exists, where it lives, how it was built, and what's still open. Last updated: 5 Oct 2026.
+Read this first in any new session. It's the single source of truth for what exists, where it lives, how it was built, and what's still open. Last updated: 5 Oct 2026 (cohort at D38).
 
 **This is a git repo:** `git@github.com:DeeepshikhaRaghuvanshi/gtme-cohort.git` (private), accessed over SSH with plain git; no gh CLI. Pull before you start, and commit and push after every milestone; the rules are in CLAUDE.md. Paths like `/mnt/c/Users/Abi M/...`, the rclone remotes and the local Piper binary only exist on **Abi's WSL machine**. On another machine, use the Google Drive web UI or connector for Drive, and run `scripts/setup_video_tools.sh` for the video tools.
 
@@ -8,7 +8,7 @@ Read this first in any new session. It's the single source of truth for what exi
 - **Deepu** (Deepshikha Raghuvanshi): full-stack/data engineer (4+ yrs), enrolled in **Stable GTM's GTM Engineering cohort**. Instructor **Yogesh Jaiswal** (founder@stablegtm.com). Live classes ~08:55 IST, two "guide days" per session (D01+D02, …).
 - **Abi**: her partner (also an engineer), who ran the catch-up with Claude from 27 Sep to 2 Oct 2026 while she was overloaded at work. Both are new to GTM vocabulary, not to software.
 - **Portfolio company: Saffron** (YC Spring 2026, trysaffron.ai). AI-native technical interviews: a candidate builds a real feature in the client's codebase with Claude Code, and AI reviewers score the process. $199 / $499 a month, enterprise custom. Competitors: HackerRank, CodeSignal, Rounds.so, CoderPad, Karat, HackerEarth, micro1.
-- **Cohort covered so far:** D01–D36 (to 2 Oct 2026) plus guest webinars (Rejoice 15 Aug, Kushagra 29 Aug), Sales Navigator and Instantly training videos. The course follows a 12-week, 60-session Learning Guide (`source/REF_learning-guide.md`).
+- **Cohort covered so far:** D01–D38 (to 5 Oct 2026) plus guest webinars (Rejoice 15 Aug, Kushagra 29 Aug), Sales Navigator and Instantly training videos. The course follows a 12-week, 60-session Learning Guide (`source/REF_learning-guide.md`).
 
 ## 2. Accounts and identities (important)
 - **deepshikhagtme@gmail.com**: the dedicated GTM workspace account. Clay, Prospeo and the "GTM Cohort Catch-up" Drive folder live here. A Chrome profile "GTM" is signed in as this account, with bookmarks grouped by layer.
@@ -25,6 +25,7 @@ Folder: https://drive.google.com/drive/folders/1tq9Z9VRXfo366aSE9X9VroCUzCvNiWjw
 - **KT Pack - Saffron** (Google Doc): https://docs.google.com/document/d/1iRNGee02RezXl-XNMse0UaERIm-fb9Q7cjOSkUqmxWY
 - **Saffron - Client Delivery Sheet** (Google Sheet): https://docs.google.com/spreadsheets/d/1GYHrImz2G2mTps-sG9iZRxIKlayI84voEAyA3on5djY
 - **LinkedIn Post - Draft** (Google Doc): https://docs.google.com/document/d/1DF_4a26ABSIbOnAaFQHY0WYbHyjxwp4HP_T-0NejyBM
+- **Homework - D37-D38 HeyReach CHRO Campaign** (current homework): https://docs.google.com/document/d/10ArxuLqzYtNZMVl3LPMO-VCoKLGuc4d0vmNHjAZoeSA
 - **Before Today's Class - 28 Sep Catch-up**: https://docs.google.com/document/d/13LuTb06qT1pqlWurzo2oySS0HYwr8i51pijHc5s5a24
 - README - Start Here · 00 Cohort Master Notes · Strategy Doc - Saffron v2 · Clay Build Sheet · Clay Credit Log · Saffron 50 Accounts · Saffron Accounts - Qualified.csv
 - **Session Notes/**: 23 docs (D01–D36, guests, videos, reference guides)
@@ -44,6 +45,8 @@ https://drive.google.com/drive/folders/1xJu8MQoRouZqeaNaBxRTyJzww5tqjRrN
 ### Repo / local workspace (on Abi's machine: ~/workspace/deepu/gtme-cohort)
 - `HANDOFF.md`: this file
 - `source/`: course docs extracted to markdown (Gemini notes include full transcripts for D01–D28), plus local transcripts of the Sales Navigator and Instantly videos, the reference guides, and the Learning Guide
+- `homework/`: guides written for Deepu (current: D37–D38 HeyReach CHRO campaign)
+- `docs/remote-access-setup.md`: the paused remote-access plan and how to resume it
 - `notes/`: `00-cohort-master-notes.md` (one-page map, rules, glossary, tracker), one notes file per session, `D29-D36_summary-notes.md` (written from Gemini summary screenshots only) and `D27-D28_catchup-brief.md`
 - `strategy/strategy-doc-saffron-v2.md`: v1 plus SOM, segments, personas, ranked signals, offers and filters, with the real TAM/SAM/SOM counts
 - `data/`: `raw/` (prospeo.csv, clay.csv), `exclude.csv` (every exclusion with its reason), `merge_dedupe.py`, `saffron_50_accounts.csv`, `saffron_accounts_qualified.csv` (Clay export), `saffron_people_export.csv`, `build_delivery_sheet.py`, `Saffron - Client Delivery Sheet.xlsx`, `signal_swe_openings.csv`
@@ -136,7 +139,7 @@ https://drive.google.com/drive/folders/1xJu8MQoRouZqeaNaBxRTyJzww5tqjRrN
 - **Headless Chromium:** always pass the keyring-safe flags from the global CLAUDE.md.
 - **faster-whisper** runs on the GPU (GTX 1650 Ti 4 GB) with medium.en int8_float16.
 
-## 7b. Remote access for Deepu (Abi's WSL machine)
+## 7b. Remote access for Deepu (Abi's WSL machine): ON HOLD, see docs/remote-access-setup.md
 - A separate Linux user **`deepu`** runs a **VS Code tunnel** named `saffron-gtm`, as the systemd service `code-tunnel-deepu`.
 - How Deepu connects: vscode.dev or VS Code → Remote Explorer → Tunnels, signed in with her GitHub.
 - She sees only `/home/deepu`, which holds her own clone at `/home/deepu/gtme-cohort`. Abi's home is 750.
@@ -145,6 +148,10 @@ https://drive.google.com/drive/folders/1xJu8MQoRouZqeaNaBxRTyJzww5tqjRrN
 - It only works while the Windows PC is on and WSL is running. Claude Code in her terminal uses her own Claude login.
 
 ## 8. Open items
+**Current homework (D37–D38): `homework/D37-D38_heyreach-chro-campaign.md`.** Saffron × CHRO LinkedIn campaign in HeyReach: 4 context-segment micro-campaigns, configured but not live. Also: optimise her LinkedIn profile, watch last week's recordings, and review the segmentation from the previous session.
+
+**Remote access:** paused 5 Oct. The script is ready but nothing has been run; resume from docs/remote-access-setup.md.
+
 **For Deepu:**
 - Share Strategy Doc v2 with Yogesh; paste the TAM/SAM/SOM screenshots from Build Evidence.
 - Post the LinkedIn post from her own account (check whether the bonus point expects tagging Yogesh or Stable GTM).

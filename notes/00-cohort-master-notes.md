@@ -92,6 +92,10 @@ Core idea: **value is created inside layers and destroyed at the handoffs betwee
 - **D35–36 · Cold email frameworks:** 6-email sequence with an options close, A/B tests, micro-campaigns, tracking off.
 (Written from Gemini summaries; see D29-D36_summary-notes.md.)
 
+### D37–D38 (5 Oct): personalization beyond {first_name}
+- Micro-campaigns over mass AI personalization. HeyReach for LinkedIn automation: 25 connection requests and 40 messages a day; ~750 a month split into 4 campaigns. Optimise the profile and post thought leadership first; LinkedIn ~30% replies vs 1–4% for email. Segment by context (events), not seniority. Results show in ~1 month; getting it right takes 2–3 months. Trigify was acquired by HubSpot.
+- Homework: a Saffron × CHRO campaign in HeyReach, configured but not live. See `homework/D37-D38_heyreach-chro-campaign.md` and `notes/D37-D38_personalization-micro-campaigns-heyreach.md`.
+
 ## 6. Glossary
 
 - **ICP / persona:** the ideal company vs the ideal person inside it. Decision maker = signs; champion = pushes internally.
