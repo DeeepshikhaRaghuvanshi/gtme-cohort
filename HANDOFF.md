@@ -2,7 +2,7 @@
 
 Read this first in any new session. It's the single source of truth for what exists, where it lives, how it was built, and what's still open. Last updated: 5 Oct 2026.
 
-**This is a git repo** (private, on Deepu's GitHub). Pull before you start, and commit and push after every milestone; the rules are in CLAUDE.md. Paths like `/mnt/c/Users/Abi M/...`, the rclone remotes and the local Piper binary only exist on **Abi's WSL machine**. On another machine, use the Google Drive web UI or connector for Drive, and run `scripts/setup_video_tools.sh` for the video tools.
+**This is a git repo:** `git@github.com:DeeepshikhaRaghuvanshi/gtme-cohort.git` (private), accessed over SSH with plain git; no gh CLI. Pull before you start, and commit and push after every milestone; the rules are in CLAUDE.md. Paths like `/mnt/c/Users/Abi M/...`, the rclone remotes and the local Piper binary only exist on **Abi's WSL machine**. On another machine, use the Google Drive web UI or connector for Drive, and run `scripts/setup_video_tools.sh` for the video tools.
 
 ## 1. Who and what
 - **Deepu** (Deepshikha Raghuvanshi): full-stack/data engineer (4+ yrs), enrolled in **Stable GTM's GTM Engineering cohort**. Instructor **Yogesh Jaiswal** (founder@stablegtm.com). Live classes ~08:55 IST, two "guide days" per session (D01+D02, …).

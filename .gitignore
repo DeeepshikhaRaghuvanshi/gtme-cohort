@@ -21,11 +21,10 @@ __pycache__/
 out-drive/
 drive-course/
 
-# Secrets: never commit tokens, rclone or gh config
+# Secrets: never commit tokens or rclone config
 *.token
 .env
 rclone.conf
-hosts.yml
 
 # OS and editor noise
 .DS_Store

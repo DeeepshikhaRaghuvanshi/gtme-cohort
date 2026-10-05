@@ -17,9 +17,14 @@ Deepu's (Deepshikha's) working repo for the Stable GTM "GTM Engineering" cohort,
 - Two people edit this repo. Make small, focused commits and pull before starting.
 - Drive is the sharing layer for Deepu's Google Docs. After changing a deliverable, regenerate the .docx with `python3 scripts/md2docx.py <in.md> <out.docx>` and update the Drive copy (rclone if set up on that machine, otherwise upload manually). Say which Drive files changed in the commit message.
 
+## GitHub access
+- Remote: `git@github.com:DeeepshikhaRaghuvanshi/gtme-cohort.git` (private). Use plain `git` over **SSH** only. **Don't use or install the `gh` CLI**; it isn't part of this setup.
+- On Abi's machine, any repo under `~/workspace/deepu/` automatically uses Deepu's SSH key (`~/.ssh/id_ed25519_deepu`) and her git identity via `includeIf` → `~/.gitconfig-deepu` (see `~/workspace/SSH-Multi-Account-Setup.md`). Don't change the remote URL or add credential helpers.
+- On Deepu's own machine, her normal GitHub SSH key works as-is.
+
 ## Never commit
 - Media or large binaries: videos, audio, voice models, zips. They live in Drive; `.gitignore` covers them.
-- Secrets: API keys, OAuth tokens, rclone or gh config, Clay or Apollo credentials.
+- Secrets: API keys, OAuth tokens, rclone config, Clay or Apollo credentials.
 - **This repo holds third-party personal data** (classmates' details in `source/` transcripts; prospects' names and work emails in `data/` and `buildlog/evidence/`). **Keep it private.** Never make it public, never paste that data into public posts, and don't add more personal data than the work needs.
 
 ## How Deepu and Abi like to work
