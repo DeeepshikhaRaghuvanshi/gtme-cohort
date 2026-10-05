@@ -1,0 +1,33 @@
+# Media and large binaries: these live in Google Drive ("GTM Cohort Catch-up"), not git
+*.mp4
+*.mkv
+*.mov
+*.wav
+*.mp3
+*.onnx
+*.onnx.json
+*.zip
+
+# Video tooling and render output: re-create with scripts/setup_video_tools.sh and video/render3.py
+video/piper/
+video/voice/
+video/build/
+video/_install.log
+video/__pycache__/
+__pycache__/
+*.pyc
+
+# Staging and mirror folders (regenerated or pulled from Drive)
+out-drive/
+drive-course/
+
+# Secrets: never commit tokens, rclone or gh config
+*.token
+.env
+rclone.conf
+hosts.yml
+
+# OS and editor noise
+.DS_Store
+Thumbs.db
+*.swp

@@ -1,0 +1,495 @@
+<title>Saffron Build Log</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#f4f6f7; --surface:#ffffff; --ink:#15212e; --ink-2:#3d4b59; --muted:#6a7885;
+  --line:#dbe2e7; --accent:#0e6f69; --accent-soft:#e2f1ef; --warn:#a4570c; --warn-soft:#fbf0e3;
+  --note:#2f4d8a; --note-soft:#e7edf8; --good:#2c7a3f; --code-bg:#eef2f4;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f161c; --surface:#16212a; --ink:#e6edf2; --ink-2:#c1ccd5; --muted:#8d9ba7;
+    --line:#26343f; --accent:#4cc2b6; --accent-soft:#143532; --warn:#e3a45e; --warn-soft:#3a2a17;
+    --note:#8fb0ee; --note-soft:#1b2842; --good:#6cc485; --code-bg:#1d2a34;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f161c; --surface:#16212a; --ink:#e6edf2; --ink-2:#c1ccd5; --muted:#8d9ba7;
+  --line:#26343f; --accent:#4cc2b6; --accent-soft:#143532; --warn:#e3a45e; --warn-soft:#3a2a17;
+  --note:#8fb0ee; --note-soft:#1b2842; --good:#6cc485; --code-bg:#1d2a34;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;padding-inline:16px}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.shell{max-width:1180px;margin-inline:auto;display:grid;grid-template-columns:250px minmax(0,1fr);gap:48px;padding-block:32px 96px}
+@media (max-width:900px){.shell{grid-template-columns:minmax(0,1fr);gap:16px;padding-block:16px 64px}}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;max-height:calc(100vh - 32px);overflow:auto;font-size:14.5px}
+@media (max-width:900px){nav.toc{position:static;max-height:none}}
+.toc details{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:12px 14px}
+.toc summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:15px}
+@media (min-width:901px){.toc details>summary{list-style:none;pointer-events:none}.toc details>summary::-webkit-details-marker{display:none}}
+.toc ol{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:2px}
+.toc li a{display:block;padding:4px 8px;border-radius:6px;text-decoration:none;color:var(--ink-2)}
+.toc li a:hover{background:var(--accent-soft);color:var(--ink)}
+.toc .grp{margin-top:10px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-inline:8px}
+.progress{margin-top:14px;font-size:13.5px;color:var(--muted)}
+.bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar>span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+main{min-width:0}
+header.hero{padding-block:8px 28px;border-bottom:1px solid var(--line);margin-bottom:28px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-size:clamp(34px,5vw,50px);line-height:1.05;margin:.3em 0 .35em;text-wrap:balance;letter-spacing:-.01em}
+h2{font-family:var(--display);font-size:clamp(26px,3.4vw,32px);line-height:1.15;margin:0 0 .5em;text-wrap:balance}
+h3{font-family:var(--display);font-size:21px;line-height:1.25;margin:1.6em 0 .4em;text-wrap:balance}
+h4{font-size:17px;margin:1.3em 0 .3em}
+p,li{max-width:68ch}
+.lede{font-size:19px;color:var(--ink-2);max-width:62ch}
+section.part{padding-block:12px 36px;border-bottom:1px solid var(--line);margin-bottom:28px;scroll-margin-top:16px}
+.partlabel{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.concept,.step{scroll-margin-top:16px}
+.concept{padding-block:4px 10px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-block:22px}
+@media (max-width:560px){.step{padding:18px 16px}}
+.stephead{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.stepnum{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:3px 9px;border-radius:99px;white-space:nowrap}
+.step h3{margin:0}
+.meta{font-size:14.5px;color:var(--muted);margin:.4em 0 1em}
+.callout{border-radius:10px;padding:12px 16px;margin-block:14px;font-size:16px}
+.callout p{margin:.3em 0}
+.callout .lbl{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:2px}
+.analogy{background:var(--note-soft)}.analogy .lbl{color:var(--note)}
+.why{background:var(--accent-soft)}.why .lbl{color:var(--accent)}
+.warn{background:var(--warn-soft)}.warn .lbl{color:var(--warn)}
+.send{border:1px dashed var(--accent);background:transparent}.send .lbl{color:var(--accent)}
+ol.do{padding-left:1.3em;display:grid;gap:8px}
+ol.do>li::marker{font-family:var(--mono);color:var(--accent);font-weight:600}
+code,kbd{font-family:var(--mono);font-size:.86em;background:var(--code-bg);padding:1px 6px;border-radius:5px}
+kbd{border:1px solid var(--line)}
+pre.block{font-family:var(--mono);font-size:13.5px;background:var(--code-bg);padding:14px 16px;border-radius:10px;overflow-x:auto;white-space:pre-wrap;line-height:1.5}
+.tablewrap{overflow-x:auto;margin-block:14px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:none}
+.checks{list-style:none;padding:0;margin:16px 0 4px;display:grid;gap:6px;border-top:1px solid var(--line);padding-top:14px}
+.checks label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:16px}
+.checks input{margin-top:5px;width:17px;height:17px;accent-color:var(--accent);flex:none}
+.checks input:checked+span{color:var(--muted);text-decoration:line-through}
+.funnel{display:grid;gap:6px;margin-block:16px}
+.funnel div{padding:9px 14px;border-radius:8px;background:var(--accent-soft);color:var(--ink);font-size:15.5px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.funnel div b{font-family:var(--mono);font-size:13px;color:var(--accent)}
+.sets{display:grid;place-items:center;margin-block:18px}
+.sets svg{max-width:100%;height:auto}
+.layers{display:grid;gap:6px;margin-block:14px}
+.layer{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.layer .n{font-family:var(--mono);font-weight:600;color:var(--accent);font-size:14px;padding-top:2px}
+.layer p{margin:0;font-size:15.5px}
+.twocol{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-block:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--surface)}
+.card h4{margin:0 0 .3em}
+.card p{margin:.2em 0;font-size:15.5px}
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;padding:2px 8px;border-radius:99px;background:var(--code-bg);color:var(--ink-2);margin-right:4px}
+dl.gloss{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:8px 18px;margin-block:14px}
+@media (max-width:560px){dl.gloss{grid-template-columns:minmax(0,1fr)}dl.gloss dd{margin-bottom:8px}}
+dl.gloss dt{font-weight:700}
+dl.gloss dd{margin:0;color:var(--ink-2)}
+footer{color:var(--muted);font-size:14px;padding-top:12px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+<style>
+.entry{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-block:22px;scroll-margin-top:16px}
+@media (max-width:560px){.entry{padding:18px 16px}}
+.entry h3{margin:0}
+.status{font-family:var(--mono);font-size:12px;font-weight:600;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.s-done{background:var(--accent-soft);color:var(--accent)}
+.s-prog{background:var(--warn-soft);color:var(--warn)}
+.s-next{background:var(--code-bg);color:var(--muted)}
+.facets{display:grid;gap:14px;margin-top:14px}
+.facet h4{margin:0 0 .2em;font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.facet p,.facet li{margin:.25em 0}
+figure{margin:12px 0;display:grid;gap:6px}
+figure img{border:1px solid var(--line);border-radius:8px;background:#fff;max-width:100%;height:auto}
+figcaption{font-size:14px;color:var(--muted)}
+.figrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;align-items:start}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-block:16px}
+.kpi{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--surface)}
+.kpi .v{font-family:var(--display);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}
+.kpi .l{font-size:13.5px;color:var(--muted)}
+.decision{border-left:3px solid var(--accent);padding-left:12px}
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Contents">
+  <details open>
+    <summary>Log</summary>
+    <ol>
+      <li><a href="#brief">Project brief</a></li>
+      <li><a href="#deviations">Decisions and deviations</a></li>
+      <li><a href="#fieldnotes">Field notes</a></li>
+      <li class="grp">Entries</li>
+      <li><a href="#e1">1 · Tool setup and constraints</a></li>
+      <li><a href="#e2">2 · Clay credit budget</a></li>
+      <li><a href="#e3">3 · TAM in Prospeo</a></li>
+      <li><a href="#e4">4 · SAM in Prospeo</a></li>
+      <li><a href="#e5">5 · SOM in Prospeo</a></li>
+      <li><a href="#e6">6 · The 50-account list</a></li>
+      <li><a href="#e7">7 · Clay: qualify the 50</a></li>
+      <li><a href="#e8">8 · People, emails, verification</a></li>
+      <li><a href="#e9">9 · Deliverable</a></li>
+    </ol>
+  </details>
+</nav>
+
+<main>
+<header class="hero" id="brief">
+  <div class="eyebrow">Build log · Saffron outbound pipeline · started 28 Sep 2026</div>
+  <h1>Saffron Build Log</h1>
+  <p class="lede">A running record of building Saffron's account-qualification pipeline for the Stable GTM cohort. Each entry says why the step matters, what was done, the evidence, what it told us, and what we decided next.</p>
+  <div class="kpis">
+    <div class="kpi"><div class="v">~54,000</div><div class="l">TAM · companies (Prospeo)</div></div>
+    <div class="kpi"><div class="v">~12,000</div><div class="l">SAM · companies (Prospeo)</div></div>
+    <div class="kpi"><div class="v">2,921</div><div class="l">SOM · companies (Prospeo)</div></div>
+    <div class="kpi"><div class="v">1,005</div><div class="l">Clay credits at start</div></div>
+    <div class="kpi"><div class="v">30 / 50</div><div class="l">Outreach · 60% pass rate</div></div>
+    <div class="kpi"><div class="v">40</div><div class="l">Verified work emails (of 45 eligible)</div></div>
+    <div class="kpi"><div class="v">118.6</div><div class="l">Clay credits used, whole pipeline</div></div>
+  </div>
+  <div class="card">
+    <h4>The brief</h4>
+    <p><b>Saffron</b> (YC Spring 2026) sells AI-native technical interviews: candidates build a real feature in the hiring company's codebase with Claude Code, and AI reviewers score how they worked. Pricing is self-serve ($199–$499/month), so the best early customers are <b>US tech companies of 50–500 people that hire engineers regularly</b>, where the CTO or VP Engineering can buy without procurement.</p>
+    <p>The goal of this build is to go from that description to <b>50 target companies</b>, each qualified as <i>Outreach</i> or <i>Don't outreach</i> with a written reason, while spending as few Clay credits as possible.</p>
+  </div>
+</header>
+
+<section class="part" id="deviations">
+  <div class="partlabel">Summary</div>
+  <h2>Decisions and deviations</h2>
+  <p>Places where the build differs from the course's default instructions, and why. A reviewer or interviewer will ask about these.</p>
+  <ul>
+    <li><b>Two list sources instead of three.</b> Apollo rejects gmail sign-ups and needs a company email. We used Prospeo and Clay's company search; Apollo can be added once a work email exists.</li>
+    <li><b>Proxies for locked filters.</b> Prospeo's free plan locks Funding, Job Posting and Technologies. Headcount growth stands in for "actively hiring", Engineering department headcount for "has a real engineering team", and founded year for "venture-stage".</li>
+    <li><b>Company size narrowed to 50–500 for SOM</b> (the course example used up to 1,000), because Saffron's self-serve pricing fits companies where one engineering leader decides.</li>
+  </ul>
+</section>
+
+<section class="part" id="fieldnotes">
+  <div class="partlabel">For Deepu</div>
+  <h2>Field notes</h2>
+  <p>Small, practical things learned while building. None of this is in the course material, and each one cost time to discover.</p>
+  <h3>Accounts and identity</h3>
+  <ul>
+    <li><b>Data vendors reject free email domains.</b> Apollo returned "You cannot sign up with this email address" for gmail; Ocean.io did the same. A company-domain mailbox is the fix.</li>
+    <li><b>Identity platforms stay on your real account.</b> LinkedIn allows one account per person, and a second profile risks restriction; its sign-up for the new gmail simply failed. The post, Sales Navigator and outreach all run from Deepu's own profile. The dedicated gmail is only for tools with credits and trials.</li>
+  </ul>
+  <h3>Prospeo</h3>
+  <ul>
+    <li><b>Free plan locks</b> Funding, Job Posting, Technologies and Revenue. Unlocked stand-ins: Headcount by Department (Engineering ≥ 20) for "real engineering team", Headcount Growth for "hiring", Founded Year for "venture-stage".</li>
+    <li><b>Results sort by relevance, which favours bigger companies.</b> Page 1 of a 51–500 search was all 250–490 employees. Balance the size mix with a second source or a sort change.</li>
+    <li><b>The export is rich (~95 columns):</b> active job count, job titles, last funding round and date, technologies, MX provider, competitors. It's free signal data that can save Clay credits or cross-check Clay's results.</li>
+    <li><b>Where things are:</b> the export button is at the far right of the results header, not in the "selected" dropdown (that one only offers selection modes).</li>
+    <li><b>Industry filters leak.</b> "Hospitals and Health Care" returns clinics and therapy practices; an engineering-headcount filter removes them.</li>
+  </ul>
+  <h3>Clay: finding companies</h3>
+  <ul>
+    <li><b>Clay's raw company data is noisy.</b> With only country, size and industry filters, the top results were media brands, job boards and a competitor.</li>
+    <li><b>Clay's search has free signal filters:</b> "people are…" (current employees by title) and "job openings are…" (open roles by title). Using both cut ~31,000 to 196 good-fit companies at zero credit cost.</li>
+    <li><b>Job title appears in two filters that ask different questions:</b> employee titles show whether a real engineering team exists; job-opening titles show whether they're hiring now.</li>
+    <li><b>Use generic titles with "similar to".</b> Stack-specific titles (SAP, Salesforce, SharePoint Developer) pull in IT-services and non-tech companies.</li>
+    <li><b>"Location is United States" means any US office, not HQ.</b> Indian and UK-headquartered companies came through; check the Country column.</li>
+    <li><b>Continue → "Save to new workbook and table"</b>, not "Save to Companies" (that's an audience list, not a table).</li>
+    <li><b>After saving, Clay opens an "Enrich companies" wizard</b> with enrichments pre-ticked. Close it with × to skip; "Save and run 10 rows" would spend credits on a source-only table.</li>
+    <li><b>Export lives in Tools → Export tab → Download CSV.</b></li>
+  </ul>
+  <h3>Clay: building the table</h3>
+  <ul>
+    <li><b>There are two auto-run switches.</b> The table-level one is the "Manual/Auto-run" button at the top left. Each enrichment column also has its own Auto-run toggle under Run settings, <b>on by default</b>. Turn it off before saving a new column, or it can run on every row.</li>
+    <li><b>Clay formulas are JavaScript expressions.</b> Describe the formula in English and Clay writes JS you can read and edit, e.g. <code>{{Domain}}?.toLowerCase()?.replace(/^https?:\/\//,"")</code>. Formulas cost nothing.</li>
+    <li><b>Credit prices differ ~10×.</b> From Clay's enrichment picker: Enrich company 0.5/row, Job openings ~0.5/row, Research ICP with AI 0.1/row, Latest funding ~5.7/row, Competitors ~5/row. Keep expensive columns behind run conditions.</li>
+    <li><b>The new column panel has "Save and don't run enrichments"</b>. Use it, then run 10 rows from the column's header menu.</li>
+  </ul>
+  <h3>Clay: enrichments and credits</h3>
+  <ul>
+    <li><b>Billing differs by enrichment.</b> "Find active job openings" and "Find contacts at company" charged only for rows that returned something; "No Job Found", "No Profile Found", invalid-input errors and rows skipped by a run condition were free. The course's "charged per attempt" rule isn't universal, so run 10 rows and check the balance.</li>
+    <li><b>"Run empty or out-of-date rows" vs "Force run all".</b> The first skips rows already done; it saved 5 credits when finishing Enrich company after the 10-row test.</li>
+    <li><b>Job openings "Limit" only accepts 1–10.</b> Setting 50 errored on every row (free). The limit caps the job records returned, but Job Count still reports the full total (LawnStarter showed 23).</li>
+    <li><b>The same signal costs 0.5 to 8 credits a row depending on the provider.</b> Clay's own "Find active job openings" at 0.5 was enough; the waterfall, LeadMagic and TheirStack cost 2–8.</li>
+    <li><b>Clay's search and its enrichment disagree.</b> All 32 Clay-sourced companies passed a "5+ engineering openings" search filter, but 11 showed fewer than 5 in the live enrichment. Hugging Face (1,140) and Yuno (1,424) sat in the "51–200" search band. Search narrows; enrichment verifies.</li>
+    <li><b>A total job count isn't an engineering job count.</b> Prospeo listed 23 jobs for Sprinto, of which about one was a real software role. Always look at titles.</li>
+    <li><b>Clay writes the country as "US".</b> Formulas must compare against "US", not "United States".</li>
+  </ul>
+  <h3>Clay: AI columns</h3>
+  <ul>
+    <li><b>Clay defaults to its most expensive model.</b> Helium costs 1 credit, Neon 2, Argon 3, and Argon is labelled "recommended". The Use AI panel quoted ~3.8 a row before switching to Helium.</li>
+    <li><b>Use AI → Configure tab</b> gives direct control over use case (Web research / Claygent), model, prompt, outputs and run settings. The Generate tab and the separate "Claygents" page (a standalone agent builder) aren't needed for a table column.</li>
+    <li><b>Insert column references with "/".</b> Typed <code>{{Company Name}}</code> stays literal text; the orange "doesn't reference any other columns" warning means the AI would research the placeholder itself.</li>
+    <li><b>Typed outputs fix sloppy answers more cheaply than a stronger model.</b> Helium put a sentence where "yes" belonged; switching the field to True/False and describing the tools field fixed it on the same cheap model.</li>
+    <li><b>Confidence markers:</b> green = high, orange = medium. Check the evidence URL on orange answers (e.g. ITILITE's came from a job board, not its own site).</li>
+  </ul>
+  <h3>Clay: formulas</h3>
+  <ul>
+    <li><b>Test in the formula preview before saving.</b> It showed two bugs in the first generated eligibility formula.</li>
+    <li><b>Types bite.</b> The AI field holds the text "true", so <code>== true</code> never matched (in JavaScript <code>"true" == true</code> is false). A 0 stored as a count wasn't caught by <code>!{{Peoplecount}}</code>. Asking Clay to "convert to numbers, treat empty as 0, compare the AI field as text" produced <code>Number(x || 0)</code> and <code>String(x).toLowerCase() === "true"</code>.</li>
+    <li><b>Lock column names.</b> Clay auto-named the reason column "Staffing Summary"; formulas and conditions reference names, so rename before building on a column, never after.</li>
+  </ul>
+  <h3>Clay: people and email</h3>
+  <ul>
+    <li><b>The free plan caps a table at 50 usable rows.</b> The people table received 79 rows but only 50 were usable ("29 more rows available: upgrade"). The Learning Guide says 200. Check limits in the tool itself.</li>
+    <li><b>New tables default to Auto-run on.</b> The table created by "Send table data" came up as Auto-run; switch it to Manual before adding paid columns.</li>
+    <li><b>"Send table data" is free.</b> Moving each person from a list cell into their own row in another table cost 0 credits, as did "Add to column" for name, title and LinkedIn URL.</li>
+    <li><b>Clay auto-names formula columns.</b> The Persona column came out as "Job Seniority", so a typed <code>{{Persona}}</code> in a run condition pointed at nothing and the preview showed "Will not run" on every row. Always insert column references with <code>/</code>, and check "Referenced columns" is not empty.</li>
+    <li><b>In Manual mode, run the final waterfall column.</b> Running the first sub-column only ran provider 1. Running the last "Work Email" column ran the whole chain: each provider plus its validation step, stopping at the first valid email.</li>
+    <li><b>The cheapest provider did almost all the work.</b> Findymail (first in the waterfall) found 39 of the 40 verified emails; Hunter found 1. The other 9 providers only ran for the 5 hard cases.</li>
+    <li><b>Validation keeps bad addresses out.</b> One provider returned an address for Steven Yue (SandboxAQ) that failed validation, so it never reached the final column.</li>
+    <li><b>Tune people search with seniority, not just titles.</b> Titles alone returned co-founders, a CEO and a TA coordinator. Removing "Co-Founder" and adding Seniorities (C-Level, Director, Head, Manager, VP) returned the VP and SVP of Engineering. Sales-flavoured titles still slip through ("Sales Engineer", "Field CTO"), so a Persona formula filters them before paying for emails.</li>
+    <li><b>Whole-word regex cuts both ways.</b> <code>\bvp\b</code> missed "SVP"; <code>\baccount\b</code> missed "Accounting". The preview caught both.</li>
+  </ul>
+  <h3>Judgment calls</h3>
+  <ul>
+    <li><b>Screen every exported list by hand.</b> Filters let through competitors (HackerRank, HackerEarth, micro1, Coffeee.io), services and outsourcing firms (thinkbridge, GoML, Tech9, Particle41, Velozient), a subsidiary (Wing) and possible partners (Workable, Joveo, Sense). Keep each exclusion with its reason.</li>
+    <li><b>Rules need a human pass on edge cases.</b> Pinecone (9 SWE openings, 137 employees) failed only because the recruiting-team lookup found nobody, most likely a data gap. Check LinkedIn and override by hand.</li>
+    <li><b>HQ location ≠ where the team or buyer sits.</b> Several US-registered companies have engineering mostly in India. They're still valid for Saffron, but location filters don't tell the whole story.</li>
+  </ul>
+</section>
+
+<section class="part">
+  <div class="partlabel">Entries</div>
+  <h2>Build entries</h2>
+
+  <article class="entry" id="e1">
+    <div class="stephead"><span class="status s-done">Done</span><h3>1 · Tool setup and constraints</h3></div>
+    <div class="facets">
+      <div class="facet"><h4>Context</h4><p>The course asks for a dedicated workspace so tool credits and trials don't mix with personal accounts (D03–D04).</p></div>
+      <div class="facet"><h4>What we did</h4><p>A separate Chrome profile signed in as <code>deepshikhagtme@gmail.com</code>, with Prospeo and Clay accounts on it. Bookmarks are grouped by the course's layers (L1 Data, L2 Enrich, L7 AI). LinkedIn and Loom stay on Deepu's existing personal account.</p></div>
+      <div class="facet"><h4>What we learned</h4><p>Apollo returned "You cannot sign up with this email address" for the gmail. Data vendors screen out free email domains to limit abuse of free credits. Ocean.io did the same in D05–D06.</p></div>
+      <div class="facet decision"><h4>Decision</h4><p>Build today with Prospeo + Clay. Add Apollo later through a custom-domain mailbox.</p></div>
+    </div>
+  </article>
+
+  <article class="entry" id="e2">
+    <div class="stephead"><span class="status s-done">Done</span><h3>2 · Clay credit budget</h3></div>
+    <div class="facets">
+      <div class="facet"><h4>Context</h4><p>Clay charges per attempt, not per success, so a failed lookup still costs. Knowing the budget first decides how many rows each column can run on.</p></div>
+      <figure><img src="evidence/01-clay-credits.png" alt="Clay workspace showing 1,005 of 1K credits available" width="373" height="180"><figcaption>Clay workspace: 1,005 credits available at the start.</figcaption></figure>
+      <div class="facet"><h4>What it tells us</h4><p>Company enrichment, job openings, a team count and one AI research column across 50 rows is roughly 300–400 credits. That leaves room for the Helium vs Neon comparison on the AI column.</p></div>
+      <div class="facet decision"><h4>Decision</h4><p>Run every column on all 50 rows, testing on 10 first. Log credits after each AI run for the LinkedIn post.</p></div>
+    </div>
+  </article>
+
+  <article class="entry" id="e3">
+    <div class="stephead"><span class="status s-done">Done</span><h3>3 · TAM in Prospeo: ~54,000 companies</h3></div>
+    <div class="facets">
+      <div class="facet"><h4>Context</h4><p><b>TAM</b> (total addressable market) is every company that could in principle buy Saffron: companies that hire software engineers. GTM engineers count it by applying filters in a data tool and reading the result count, and the strategy doc needs the screenshot as evidence (D07–D08).</p></div>
+      <div class="facet"><h4>What we did</h4><ul>
+        <li>Location (company HQ): United States, Canada, United Kingdom, Germany, Netherlands, France</li>
+        <li>Employee headcount: 51–100 through 2001–5000 (i.e. 51–5,000)</li>
+        <li>Industry: Software Development; Technology, Information and Internet; Financial Services; Hospitals and Health Care</li>
+      </ul></div>
+      <div class="figrow">
+        <figure><img src="evidence/02-tam-filters.png" alt="Prospeo filter panel with location, headcount and industry filters applied" width="300" height="660"><figcaption>Filters applied.</figcaption></figure>
+        <div>
+          <figure><img src="evidence/02-tam-count.png" alt="Result count: 1 - 25 of 54K" width="455" height="42"><figcaption>Result count: about 54,000 companies.</figcaption></figure>
+          <div class="facet"><h4>What it tells us</h4>
+            <p>54K is a large but plausible universe, and far too broad to personalize outreach for, which is the point of the next two stages.</p>
+            <p>The sample rows show <b>noise from the healthcare industry</b>: hospitals and therapy practices appear because "Hospitals and Health Care" includes care providers, not just health-tech companies. They employ few or no software engineers.</p>
+          </div>
+        </div>
+      </div>
+      <figure><img src="evidence/02-tam-results.png" alt="First rows of TAM results including a hospital and an occupational therapy practice" width="1685" height="410" loading="lazy"><figcaption>First rows of the TAM results. Rows 2 and 8 (a hospital and an occupational-therapy practice) are not software employers.</figcaption></figure>
+      <div class="facet decision"><h4>Decision</h4><p>Keep TAM broad, since that's its job. At SAM, add <b>Engineering department headcount ≥ 20</b>, which should remove clinics and keep health-tech, plus <b>headcount growth</b> as the hiring proxy.</p></div>
+    </div>
+  </article>
+
+  <article class="entry" id="e4">
+    <div class="stephead"><span class="status s-done">Done</span><h3>4 · SAM in Prospeo: ~12,000 companies</h3></div>
+    <div class="facets">
+      <div class="facet"><h4>Context</h4><p><b>SAM</b> (serviceable addressable market) is the part of TAM that Saffron can actually serve: companies with a real engineering team that are actively hiring. Job Posting is locked on the free plan, so headcount growth stands in for hiring.</p></div>
+      <div class="facet"><h4>What we did</h4><p>Kept all TAM filters and added:</p><ul><li>Headcount by Department → Engineering &amp; Technical: 20 or more</li><li>Headcount Growth → at least 1% over the past 6 months</li></ul></div>
+      <div class="figrow">
+        <figure><img src="evidence/03-sam-filters.png" alt="Prospeo filters: headcount growth at least 1% over 6 months; engineering and technical headcount 20 to 100000" width="288" height="222"><figcaption>The two filters added for SAM.</figcaption></figure>
+        <div>
+          <figure><img src="evidence/03-sam-count.png" alt="Result count: 1 - 25 of 12K" width="442" height="34"><figcaption>Result count: about 12,000 companies (78% fewer than TAM).</figcaption></figure>
+          <div class="facet"><h4>What it tells us</h4>
+            <p>The engineering-headcount filter removed the hospitals and clinics; the results are now software, internet and fintech companies that are growing.</p>
+            <p><b>HackerRank</b> appears in the results. It's a direct Saffron competitor, so filter-built lists still need a competitor blacklist (D23–D24).</p>
+            <p>The top results are mostly 2,000–5,000-person companies, too large for Saffron's self-serve pricing.</p>
+          </div>
+        </div>
+      </div>
+      <figure><img src="evidence/03-sam-results.png" alt="SAM results: software and fintech companies including HackerRank" width="1675" height="947" loading="lazy"><figcaption>SAM results. Note HackerRank (a competitor) and the large company sizes.</figcaption></figure>
+      <div class="facet decision"><h4>Decision</h4><p>SOM narrows to US-only, 51–500 employees, founded 2012 or later. Competitors (HackerRank, CodeSignal, Rounds.so, CoderPad, Karat) will be excluded when building the 50-account list.</p></div>
+    </div>
+  </article>
+
+  <article class="entry" id="e5">
+    <div class="stephead"><span class="status s-done">Done</span><h3>5 · SOM in Prospeo: 2,921 companies</h3></div>
+    <div class="facets">
+      <div class="facet"><h4>Context</h4><p><b>SOM</b> (serviceable obtainable market) is the slice Saffron can realistically win in the next year. It's partly a filter and partly an argument: a 3-person founding team, self-serve pricing and a single engineering decision maker point to US startups of 50–500 people.</p></div>
+      <div class="facet"><h4>What we did</h4><p>Kept the SAM filters and changed three:</p><ul><li>Location → United States only</li><li>Employee headcount → 51–100, 101–200, 201–500</li><li>Founded year → 2012 or later (stand-in for venture-stage, since Funding is locked)</li></ul></div>
+      <div class="figrow">
+        <figure><img src="evidence/04-som-filters.png" alt="Prospeo filter panel for SOM: US only, 51 to 500 employees, four industries, headcount growth at least 1 percent over 6 months, engineering headcount 20 plus, founded 2012 or later" width="262" height="895"><figcaption>Full SOM filter set.</figcaption></figure>
+        <div>
+          <figure><img src="evidence/04-som-count.png" alt="Result count: 1 - 25 of 2921" width="282" height="30"><figcaption>Result count: 2,921 companies.</figcaption></figure>
+          <div class="facet"><h4>What it tells us</h4>
+            <p><b>Funnel: ~54,000 → ~12,000 → 2,921.</b> SOM is small enough to personalize outreach for and large enough to sustain a year of campaigns.</p>
+            <p>The first page is mostly right-fit: AI and SaaS companies of 250–500 people with growing engineering teams (Novolo AI, Observe.AI, H2O.ai, AuditBoard, Sprinto).</p>
+            <p>Three need judgment. <b>Workable</b> (hiring software) is a possible competitor or reseller partner, so it's excluded from outreach. <b>Joveo</b> (recruitment marketing) is a valid target but also a possible partner. <b>Fusemachines</b> is partly an AI services and talent business, which the strategy's disqualifiers cover.</p>
+            <p><b>HQ location isn't team location.</b> Several are US-registered with engineering teams mostly in India (e.g. Sprinto, Graphy, SurveySparrow, Signzy). They're still valid, because Saffron's assessments run remotely, but it's a reminder that company location and buyer location differ (D11–D12).</p>
+          </div>
+        </div>
+      </div>
+      <figure><img src="evidence/04-som-results.png" alt="SOM results: US software and fintech companies with 250 to 500 employees" width="1515" height="860" loading="lazy"><figcaption>First page of SOM results.</figcaption></figure>
+      <div class="facet decision"><h4>Decision</h4><p>Take the list sample from these SOM results, excluding Workable and Fusemachines. Add a <b>partners</b> exclusion (other hiring-software vendors) alongside the competitor blacklist in Clay.</p></div>
+    </div>
+  </article>
+
+  <article class="entry" id="e6">
+    <div class="stephead"><span class="status s-done">Done</span><h3>6 · The 50-account list</h3></div>
+    <div class="facets">
+      <div class="facet"><h4>Context</h4><p>The course's list deliverable (D11–D16) is 50 companies from multiple sources, deduplicated, with only Company Name, Domain and Company LinkedIn URL. Clients usually hand over a bare company list, and everything else gets derived in Clay.</p></div>
+      <div class="facet"><h4>Source 1 · Prospeo (23 exported → 18 kept)</h4>
+        <p>Page 1 of the SOM results, minus Workable and Fusemachines. The export has ~95 columns, including active job count, last funding round, technologies and MX provider, so many signals are available without spending Clay credits. It's kept as a cross-check for Clay's enrichment.</p>
+        <p>All 23 were 250–490 employees, because Prospeo sorts by relevance and larger companies come first. The second source therefore targeted 51–200.</p>
+        <p>Excluded on review: <b>Novolo AI</b> (hardware incubator/investor), <b>thinkbridge</b> (outsourced product development), <b>Coffeee.io</b> (sells pre-assessed talent: competitor), <b>Sense</b> and <b>Joveo</b> (recruiting software: partners rather than buyers).</p>
+      </div>
+      <div class="facet"><h4>Source 2 · Clay Find companies (40 exported → 32 kept)</h4>
+        <p>Clay's company search exposes <b>employee-title</b> and <b>job-opening</b> filters for free. These are the two strongest Saffron signals, applied inside the search itself before any enrichment runs (D23–D24):</p>
+        <ul><li>Country US · 51–200 employees · Software Development + 2 industries · Privately held</li><li>At least 20 current employees with software/ML/AI engineering titles</li><li>At least 5 open engineering roles (7 titles, "similar to")</li></ul>
+      </div>
+      <div class="figrow">
+        <figure><img src="evidence/05-clay-filters.png" alt="Clay Find companies filters: US, 51-200 employees, software industries, 20 or more engineers, 5 or more open engineering roles, privately held" width="350" height="580"><figcaption>Clay filter set (196 matches; the first 40 were taken).</figcaption></figure>
+        <div class="facet"><h4>What it tells us</h4>
+          <p>Without the hiring filters, Clay returned ~31,000 companies, led by media brands (TechCrunch, WIRED), job boards and a competitor (HackerEarth). With them, <b>196</b> remained, nearly all AI and SaaS startups that are actively hiring engineers (Pinecone, Deepgram, Gamma, Fireworks AI, AssemblyAI). Clay's raw company data is noisy, as the instructor warned; its value is in the filters.</p>
+          <p>Clay's "location" filter matches any US office, not only HQ, so two non-US companies came through (Zetheta, India; Prolific, UK). The merge now drops non-US HQs.</p>
+          <p>Excluded on review: <b>micro1</b> (competitor: AI interviews), <b>GoML</b>, <b>Tech9</b>, <b>Particle41</b>, <b>Velozient</b> (services/outsourcing), <b>Wing</b> (Alphabet subsidiary).</p>
+        </div>
+      </div>
+      <figure><img src="evidence/05-clay-results.png" alt="Clay results: US AI and SaaS startups hiring engineers" width="1200" height="900" loading="lazy"><figcaption>Clay results with the hiring filters applied.</figcaption></figure>
+      <div class="facet"><h4>Merge</h4><p>63 input rows → 11 on the exclusion list, 2 non-US HQ, 0 duplicates → <b>50 unique companies</b>, 3 columns, no blanks. Every exclusion and its reason is recorded in <code>data/exclude.csv</code>, so the decisions are auditable.</p></div>
+      <div class="facet decision"><h4>Decision</h4><p>Import these 50 into Clay as the table to qualify. Expect the Prospeo half (larger, some with few open roles, e.g. Graphy and Branch) to produce most of the "Don't outreach" results, since the Clay half was already filtered on hiring.</p></div>
+    </div>
+  </article>
+
+  <article class="entry" id="e7">
+    <div class="stephead"><span class="status s-done">Done</span><h3>7 · Clay: qualify the 50 → 30 Outreach</h3></div>
+    <div class="facets">
+      <div class="facet"><h4>Context</h4><p>Each company gets a binary decision, <b>Outreach</b> or <b>Don't outreach</b>, with a written reason (the course's account-scoring rule, D19–D20). Saffron's qualifiers: a real engineering team that is hiring now, a recruiting team that would buy an assessment tool, and a size that fits self-serve pricing. AI-coding-tool adoption lifts companies with only a few openings.</p></div>
+      <div class="facet"><h4>What we built, column by column</h4>
+        <ol class="do">
+          <li><b>Import</b> saffron_50_accounts.csv; table auto-run set to Manual; <b>Clean Domain</b> formula (free, JavaScript generated from plain English).</li>
+          <li><b>Enrich company</b> on Clean Domain → Employee Count, Industry, Country, Founded, Type. 10-row test (5 credits), then "run 40 empty rows" (20).</li>
+          <li><b>Find active job openings</b> (Clay, 0.5/row): 7 engineering title keywords; excluded Sales, Solutions, Recruiter, Support; limit 10 → <b>Jobcount</b> + one example title. 40 companies had openings; 24 had 5+.</li>
+          <li><b>Find contacts at company</b> (Human Resources and Recruiting), matched on Company LinkedIn URL, run only if <code>{{Jobcount}} >= 1</code> → <b>Peoplecount</b>. 38 of 40 had a recruiting team.</li>
+          <li><b>AI Coding Tool Usage</b>: Use AI → Web research (Claygent), <b>Helium</b>, run only if <code>{{Jobcount}} >= 1 &amp;&amp; {{Jobcount}} < 5</code>, i.e. the 16 companies where the answer could change the decision. Outputs: ai_tools_mentioned (True/False), tools, evidence_url.</li>
+          <li><b>Outreach Eligibility</b> formula and <b>reason</b> formula (Clay named it "Staffing Summary").</li>
+        </ol>
+      </div>
+      <div class="figrow">
+        <figure><img src="evidence/06-enrich-10rows.png" alt="Enrich company results for the first 10 rows" width="1100" height="320" loading="lazy"><figcaption>Enrich company on 10 rows (5 credits).</figcaption></figure>
+        <figure><img src="evidence/07-ai-tools-columns.png" alt="AI Coding Tool Usage column with true and false answers and tool names" width="480" height="875" loading="lazy"><figcaption>AI column: runs only on 1–4-opening rows; answers split into true/false and tool names.</figcaption></figure>
+      </div>
+      <div class="facet"><h4>Credits</h4>
+        <div class="tablewrap"><table>
+          <thead><tr><th>Column</th><th>Rule</th><th>Credits</th></tr></thead>
+          <tbody>
+            <tr><td>Clean Domain, Eligibility, Reason</td><td>Formulas</td><td>0</td></tr>
+            <tr><td>Enrich company</td><td>0.5 × 50 (unrun rows only after the test)</td><td>25</td></tr>
+            <tr><td>Find active job openings</td><td>0.5 × 40 hits; misses and errors free</td><td>20</td></tr>
+            <tr><td>Find contacts (recruiting team)</td><td>0.5 × 38 hits; skipped rows free</td><td>19</td></tr>
+            <tr><td>AI Coding Tool Usage (Helium)</td><td>1 × 16 rows + 3 re-run after the output fix</td><td>19</td></tr>
+            <tr><td><b>Total</b></td><td>1,005 → 922</td><td><b>83</b></td></tr>
+          </tbody>
+        </table></div>
+        <p>Clay's default for the AI column was Argon (3 credits, ~3.8 quoted). Argon on all 50 rows would have cost roughly 150–190 credits for that one column. Model choice plus the run condition brought it to 19. The planned Neon comparison was skipped: Helium's only failure was formatting, and fixing the output types solved it without a pricier model.</p>
+        <figure><img src="evidence/07-credits-922.png" alt="Clay workspace showing 922 of 1K credits available" width="296" height="121"><figcaption>Balance after the full accounts table: 922.</figcaption></figure>
+      </div>
+      <div class="facet"><h4>AI results</h4><p>10 of 16 mention AI coding tools: ITILITE, Artisan, ButterflyMX, H2O.ai, Cognition, Polymarket, HeyGen, Kalshi, Avoma, Rillet. Cursor and Claude Code appear most often, useful framing for Saffron's message. 6 don't: Branch, Observe.AI, Opkey, Bik.ai, Gridware, SuperAnnotate.</p><p>First Helium run: Artisan's answer landed in the wrong fields (a sentence instead of "yes"). Setting <code>ai_tools_mentioned</code> to True/False and describing the tools field fixed it; the re-run was clean.</p></div>
+      <div class="facet"><h4>Two formula bugs caught in the preview</h4>
+        <p><b>1.</b> <code>{{Ai Tools Mentioned}} == true</code>: the column stores the text "true", so every AI-positive company came out Don't outreach. <b>2.</b> <code>!{{Peoplecount}}</code> didn't catch Pinecone's 0 recruiting team. Rewriting the description ("convert to numbers, treat empty as 0; compare the AI field as text") produced the fixed version.</p>
+      </div>
+      <div class="figrow">
+        <figure><img src="evidence/07-formula-before.png" alt="Preview with the first formula: AI-positive rows wrongly Don't outreach and Pinecone wrongly Outreach" width="880" height="857" loading="lazy"><figcaption>Before: rows with "true" show Don't outreach; row 31 (Pinecone, TA team 0) shows Outreach.</figcaption></figure>
+        <figure><img src="evidence/07-formula-after.png" alt="Preview with the fixed formula" width="880" height="899" loading="lazy"><figcaption>After: AI-positive rows qualify; Pinecone and Avoma don't.</figcaption></figure>
+      </div>
+      <figure><img src="evidence/07-formula-code.png" alt="Final eligibility formula in JavaScript" width="350" height="265"><figcaption>The final eligibility formula.</figcaption></figure>
+      <div class="facet"><h4>Result: 30 Outreach, 20 Don't outreach (60%)</h4>
+        <p>60% sits at the bottom of the instructor's healthy 60–70% range. Every row has a reason, e.g. "2 SWE openings · TA team 2 · 492 employees · AI tools: Cursor, Codex" (ITILITE) or "no SWE openings · no TA team · 439 employees" (Sprinto).</p>
+        <p><b>Why companies failed:</b> 10 had no engineering openings (7 of them from the Prospeo half); 2 are over 1,000 employees (Hugging Face, Yuno); 6 have 1–4 openings and no AI-tool mention; 2 have no recruiting team found (Pinecone, Avoma).</p>
+        <p><b>For manual review:</b> Pinecone (9 SWE openings, 137 employees) most likely has recruiters the lookup missed. Avoma mentions Cursor and Claude Code but has 66 employees and no recruiting team found. Check both on LinkedIn and override if warranted.</p>
+      </div>
+      <div class="facet decision"><h4>Decision</h4><p>The 30 Outreach companies go to the people table: find decision makers and champions, then work emails and verification. The Prospeo half produced most of the rejections, which supports filtering on hiring signals at the source.</p></div>
+    </div>
+  </article>
+
+  <article class="entry" id="e8">
+    <div class="stephead"><span class="status s-done">Done</span><h3>8 · People, emails, verification: 40 verified emails</h3></div>
+    <div class="facets">
+      <div class="facet"><h4>Context</h4><p>A qualified account is only useful if you can reach the person who buys. For Saffron that's the CTO, VP or Head of Engineering (decision makers) and engineering managers or talent leaders (champions). Emails are found and verified per person, so people need their own table.</p></div>
+      <div class="facet"><h4>What we did</h4><ol class="do">
+        <li><b>Find people</b> with Surfe's "Find people at company" (0.1 credits per person found), only on the 30 Outreach companies (run condition <code>{{Outreach Eligibility}} == "Outreach"</code>), up to 3 per company. Openmart (1/result) and Pubrio (3/row) would have cost about 90 credits.</li>
+        <li><b>Tuned the filters after a 10-row test.</b> The first run returned AuditBoard's co-founder, CEO and a TA coordinator. Removing "Co-Founder" and adding Seniorities C-Level/Director/Head/Manager/VP returned the VP and SVP of Engineering.</li>
+        <li><b>Split the lists into rows</b> with "Write each item to new row in other table" → "Send table data" into a new table, Saffron People, carrying 7 company columns (free).</li>
+        <li><b>Pulled person fields</b> with "Add to column": Full Name, First Name, Job Title, LinkedIn URL (free).</li>
+        <li><b>Persona formula</b> (auto-named "Job Seniority"): blank for sales/account/GTM/field/solutions/customer/marketing titles; Decision maker for CTO, VP/SVP/EVP, chief technology/product, head of engineering or talent; Champion for other engineering/talent/recruiting/director/head titles.</li>
+        <li><b>Work email waterfall</b> across 11 providers (Findymail, Hunter, Prospeo, Kitt, Datagma, Wiza, Icypeas, Enrow, Dropcontact, LeadMagic, SMARTe), each with its own validation step, only for Decision makers and Champions.</li>
+      </ol></div>
+      <div class="figrow">
+        <figure><img src="evidence/08-people-before.png" alt="First people search result for AuditBoard: co-founder, talent acquisition coordinator, founder and CEO" width="463" height="840" loading="lazy"><figcaption>Before tuning: co-founder, TA coordinator, CEO.</figcaption></figure>
+        <figure><img src="evidence/08-people-after.png" alt="Tuned people search for AuditBoard: VP of Engineering, SVP of Engineering, a sales engineer" width="360" height="890" loading="lazy"><figcaption>After adding seniorities: VP and SVP of Engineering (plus one sales engineer, filtered later).</figcaption></figure>
+      </div>
+      <figure><img src="evidence/08-persona-preview.png" alt="Persona formula preview: Decision maker, Champion, or None for sales roles" width="445" height="875" loading="lazy"><figcaption>Persona preview. Sales-facing titles (Sales Engineering, Field CTO, GTM, Technical Account) come out as None.</figcaption></figure>
+      <div class="facet"><h4>Bugs caught before spending credits</h4><ul>
+        <li><b>Persona regex:</b> whole-word matching missed "Svp Of Engineering" (came out Champion) and "Head of Technical Accounting" (not excluded). Fixed by treating svp/evp as vp and matching exclusion words anywhere.</li>
+        <li><b>Run condition pointed at nothing:</b> it was typed as <code>{{Persona}}</code>, but Clay had named the column "Job Seniority". The preview showed "Will not run" on every row. Re-inserting the column with <code>/</code> fixed it.</li>
+      </ul></div>
+      <div class="figrow">
+        <figure><img src="evidence/08-condition-broken.png" alt="Run condition preview showing Will not run on every row" width="910" height="1080" loading="lazy"><figcaption>Broken: "Will not run" everywhere.</figcaption></figure>
+        <figure><img src="evidence/08-condition-fixed.png" alt="Fixed run condition referencing Job Seniority; Will run on decision makers and champions" width="890" height="1080" loading="lazy"><figcaption>Fixed: runs only for Decision makers and Champions.</figcaption></figure>
+      </div>
+      <div class="facet"><h4>Results</h4>
+        <p>27 of 30 Outreach companies returned people (79 in total); Cognition, Polymarket and RoboMQ returned nobody matching. The free plan made only the first 50 rows usable (17 companies).</p>
+        <p>Of those 50: 5 wrong-fit titles skipped at no cost; <b>40 verified work emails from 45 eligible (89%)</b>. Findymail found 39 and Hunter 1. No provider found an email for Guanning Zhao, Douglas Sloan, Weisi Duan or Nebojša Miletić. Steven Yue's address failed validation and was excluded.</p>
+        <p>In Manual table mode, running the first sub-column only ran provider 1; running the final "Work Email" column ran the whole chain.</p>
+      </div>
+      <div class="figrow">
+        <figure><img src="evidence/08-emails-1.png" alt="Names and verified work emails, rows 1 to 30" width="320" height="875" loading="lazy"><figcaption>Final Work Email column, rows 1–30.</figcaption></figure>
+        <figure><img src="evidence/08-emails-2.png" alt="Names and verified work emails, rows 27 to 50" width="320" height="875" loading="lazy"><figcaption>Rows 27–50.</figcaption></figure>
+      </div>
+      <div class="facet"><h4>Credits</h4>
+        <div class="tablewrap"><table><thead><tr><th>Step</th><th>Credits</th></tr></thead><tbody>
+          <tr><td>People search (two 10-row tests + full run)</td><td>9.1</td></tr>
+          <tr><td>Send table data, Add to column, formulas</td><td>0</td></tr>
+          <tr><td>Email waterfall (10-row test 3.0 + rest 23.5; misses on the first provider were free)</td><td>26.5</td></tr>
+          <tr><td><b>Accounts table (entry 7)</b></td><td>83</td></tr>
+          <tr><td><b>Whole pipeline: 1,005 → 886.4</b></td><td><b>118.6</b></td></tr>
+        </tbody></table></div>
+      </div>
+      <div class="facet decision"><h4>Decision</h4><p>Ship the 40 verified contacts. Everything not reachable by email goes on the Follow-ups tab: LinkedIn outreach for the 5, a next batch of 10 companies beyond the free-plan limit, and 3 companies needing a manual people search. Deviations from the course default: the waterfall's built-in validation was used instead of a separate Enrichly column, and the Mimecast/Proofpoint/Barracuda MX check has not been done; it must happen before any sending.</p></div>
+    </div>
+  </article>
+
+  <article class="entry" id="e9">
+    <div class="stephead"><span class="status s-done">Done</span><h3>9 · Deliverable: client delivery sheet</h3></div>
+    <div class="facets">
+      <div class="facet"><h4>Context</h4><p>The D23–D24 deliverable is a clean sheet a client could act on: who to contact, why, and how to reach them.</p></div>
+      <div class="facet"><h4>What's in it</h4><ul>
+        <li><b>Summary:</b> segment, counts, credits used, the qualification rule and the email policy.</li>
+        <li><b>Contacts (40):</b> company, person, title, persona, LinkedIn, verified email, which provider found it, the account's qualification reason and AI tools named in its job ads.</li>
+        <li><b>Accounts (50):</b> every screened company with its signals, eligibility and reason, colour-coded.</li>
+        <li><b>Follow-ups (25):</b> 5 LinkedIn-only contacts, 5 wrong-fit titles, 10 next-batch companies (free-plan limit), 3 companies with no people found, and 2 manual reviews (Pinecone, Avoma).</li>
+      </ul></div>
+      <div class="facet"><h4>Where</h4><p>Google Drive → "GTM Cohort Catch-up" → <a href="https://docs.google.com/spreadsheets/d/1GYHrImz2G2mTps-sG9iZRxIKlayI84voEAyA3on5djY"><b>Saffron - Client Delivery Sheet</b></a>. Built with <code>data/build_delivery_sheet.py</code> from the two Clay exports.</p></div>
+    </div>
+  </article>
+</section>
+
+<footer>Companion to the Saffron GTME Playbook. Evidence images are cropped from screenshots taken during the build.</footer>
+</main>
+</div>

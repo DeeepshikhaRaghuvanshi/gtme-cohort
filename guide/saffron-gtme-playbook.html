@@ -1,0 +1,516 @@
+<title>Saffron GTME Playbook</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#f4f6f7; --surface:#ffffff; --ink:#15212e; --ink-2:#3d4b59; --muted:#6a7885;
+  --line:#dbe2e7; --accent:#0e6f69; --accent-soft:#e2f1ef; --warn:#a4570c; --warn-soft:#fbf0e3;
+  --note:#2f4d8a; --note-soft:#e7edf8; --good:#2c7a3f; --code-bg:#eef2f4;
+  --display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --body:"Source Sans 3", "Segoe UI", system-ui, sans-serif;
+  --mono:"JetBrains Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0f161c; --surface:#16212a; --ink:#e6edf2; --ink-2:#c1ccd5; --muted:#8d9ba7;
+    --line:#26343f; --accent:#4cc2b6; --accent-soft:#143532; --warn:#e3a45e; --warn-soft:#3a2a17;
+    --note:#8fb0ee; --note-soft:#1b2842; --good:#6cc485; --code-bg:#1d2a34;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0f161c; --surface:#16212a; --ink:#e6edf2; --ink-2:#c1ccd5; --muted:#8d9ba7;
+  --line:#26343f; --accent:#4cc2b6; --accent-soft:#143532; --warn:#e3a45e; --warn-soft:#3a2a17;
+  --note:#8fb0ee; --note-soft:#1b2842; --good:#6cc485; --code-bg:#1d2a34;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6;padding-inline:16px}
+a{color:var(--accent)}
+a:focus-visible,button:focus-visible,input:focus-visible,summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.shell{max-width:1180px;margin-inline:auto;display:grid;grid-template-columns:250px minmax(0,1fr);gap:48px;padding-block:32px 96px}
+@media (max-width:900px){.shell{grid-template-columns:minmax(0,1fr);gap:16px;padding-block:16px 64px}}
+nav.toc{position:sticky;top:calc(env(safe-area-inset-top,0px) + 16px);align-self:start;max-height:calc(100vh - 32px);overflow:auto;font-size:14.5px}
+@media (max-width:900px){nav.toc{position:static;max-height:none}}
+.toc details{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:12px 14px}
+.toc summary{cursor:pointer;font-family:var(--display);font-weight:700;font-size:15px}
+@media (min-width:901px){.toc details>summary{list-style:none;pointer-events:none}.toc details>summary::-webkit-details-marker{display:none}}
+.toc ol{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:2px}
+.toc li a{display:block;padding:4px 8px;border-radius:6px;text-decoration:none;color:var(--ink-2)}
+.toc li a:hover{background:var(--accent-soft);color:var(--ink)}
+.toc .grp{margin-top:10px;font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding-inline:8px}
+.progress{margin-top:14px;font-size:13.5px;color:var(--muted)}
+.bar{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:6px}
+.bar>span{display:block;height:100%;width:0;background:var(--accent);transition:width .3s}
+main{min-width:0}
+header.hero{padding-block:8px 28px;border-bottom:1px solid var(--line);margin-bottom:28px}
+.eyebrow{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+h1{font-family:var(--display);font-size:clamp(34px,5vw,50px);line-height:1.05;margin:.3em 0 .35em;text-wrap:balance;letter-spacing:-.01em}
+h2{font-family:var(--display);font-size:clamp(26px,3.4vw,32px);line-height:1.15;margin:0 0 .5em;text-wrap:balance}
+h3{font-family:var(--display);font-size:21px;line-height:1.25;margin:1.6em 0 .4em;text-wrap:balance}
+h4{font-size:17px;margin:1.3em 0 .3em}
+p,li{max-width:68ch}
+.lede{font-size:19px;color:var(--ink-2);max-width:62ch}
+section.part{padding-block:12px 36px;border-bottom:1px solid var(--line);margin-bottom:28px;scroll-margin-top:16px}
+.partlabel{font-family:var(--mono);font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.concept,.step{scroll-margin-top:16px}
+.concept{padding-block:4px 10px}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 24px;margin-block:22px}
+@media (max-width:560px){.step{padding:18px 16px}}
+.stephead{display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+.stepnum{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent);background:var(--accent-soft);padding:3px 9px;border-radius:99px;white-space:nowrap}
+.step h3{margin:0}
+.meta{font-size:14.5px;color:var(--muted);margin:.4em 0 1em}
+.callout{border-radius:10px;padding:12px 16px;margin-block:14px;font-size:16px}
+.callout p{margin:.3em 0}
+.callout .lbl{font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;display:block;margin-bottom:2px}
+.analogy{background:var(--note-soft)}.analogy .lbl{color:var(--note)}
+.why{background:var(--accent-soft)}.why .lbl{color:var(--accent)}
+.warn{background:var(--warn-soft)}.warn .lbl{color:var(--warn)}
+.send{border:1px dashed var(--accent);background:transparent}.send .lbl{color:var(--accent)}
+ol.do{padding-left:1.3em;display:grid;gap:8px}
+ol.do>li::marker{font-family:var(--mono);color:var(--accent);font-weight:600}
+code,kbd{font-family:var(--mono);font-size:.86em;background:var(--code-bg);padding:1px 6px;border-radius:5px}
+kbd{border:1px solid var(--line)}
+pre.block{font-family:var(--mono);font-size:13.5px;background:var(--code-bg);padding:14px 16px;border-radius:10px;overflow-x:auto;white-space:pre-wrap;line-height:1.5}
+.tablewrap{overflow-x:auto;margin-block:14px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:15px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600;background:var(--bg)}
+tr:last-child td{border-bottom:none}
+.checks{list-style:none;padding:0;margin:16px 0 4px;display:grid;gap:6px;border-top:1px solid var(--line);padding-top:14px}
+.checks label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:16px}
+.checks input{margin-top:5px;width:17px;height:17px;accent-color:var(--accent);flex:none}
+.checks input:checked+span{color:var(--muted);text-decoration:line-through}
+.funnel{display:grid;gap:6px;margin-block:16px}
+.funnel div{padding:9px 14px;border-radius:8px;background:var(--accent-soft);color:var(--ink);font-size:15.5px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.funnel div b{font-family:var(--mono);font-size:13px;color:var(--accent)}
+.sets{display:grid;place-items:center;margin-block:18px}
+.sets svg{max-width:100%;height:auto}
+.layers{display:grid;gap:6px;margin-block:14px}
+.layer{display:grid;grid-template-columns:52px minmax(0,1fr);gap:12px;align-items:start;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--surface)}
+.layer .n{font-family:var(--mono);font-weight:600;color:var(--accent);font-size:14px;padding-top:2px}
+.layer p{margin:0;font-size:15.5px}
+.twocol{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin-block:14px}
+.card{border:1px solid var(--line);border-radius:10px;padding:14px 16px;background:var(--surface)}
+.card h4{margin:0 0 .3em}
+.card p{margin:.2em 0;font-size:15.5px}
+.pill{display:inline-block;font-family:var(--mono);font-size:11.5px;padding:2px 8px;border-radius:99px;background:var(--code-bg);color:var(--ink-2);margin-right:4px}
+dl.gloss{display:grid;grid-template-columns:minmax(150px,220px) minmax(0,1fr);gap:8px 18px;margin-block:14px}
+@media (max-width:560px){dl.gloss{grid-template-columns:minmax(0,1fr)}dl.gloss dd{margin-bottom:8px}}
+dl.gloss dt{font-weight:700}
+dl.gloss dd{margin:0;color:var(--ink-2)}
+footer{color:var(--muted);font-size:14px;padding-top:12px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Contents">
+  <details open>
+    <summary>Contents</summary>
+    <ol>
+      <li><a href="#start">Start here</a></li>
+      <li class="grp">Part 1 · Understand</li>
+      <li><a href="#c-role">What a GTM engineer does</a></li>
+      <li><a href="#c-funnel">The revenue funnel</a></li>
+      <li><a href="#c-icp">ICP and personas</a></li>
+      <li><a href="#c-tam">TAM, SAM, SOM</a></li>
+      <li><a href="#c-seg">Segments</a></li>
+      <li><a href="#c-signals">Signals, intent, triggers</a></li>
+      <li><a href="#c-offer">Offer and messaging</a></li>
+      <li><a href="#c-data">Data sources and quality</a></li>
+      <li><a href="#c-enrich">Enrichment and waterfalls</a></li>
+      <li><a href="#c-clay">How Clay works</a></li>
+      <li><a href="#c-layers">The seven layers</a></li>
+      <li><a href="#c-gloss">Glossary</a></li>
+      <li class="grp">Part 2 · Build (2 hours)</li>
+      <li><a href="#s1">1 · Clay credit budget</a></li>
+      <li><a href="#s2">2 · Market size screenshots</a></li>
+      <li><a href="#s3">3 · The 50-account list</a></li>
+      <li><a href="#s4">4 · Clay: qualify accounts</a></li>
+      <li><a href="#s5">Later · Deepu</a></li>
+      <li class="grp">Part 3 · Teach</li>
+      <li><a href="#kt">KT session plan</a></li>
+    </ol>
+    <div class="progress"><span id="progtext">0 of 0 build tasks done</span><div class="bar"><span id="progbar"></span></div></div>
+  </details>
+</nav>
+
+<main>
+<header class="hero" id="start">
+  <div class="eyebrow">Stable GTM cohort · catch-up for Deepshikha · company: Saffron</div>
+  <h1>Saffron GTME Playbook</h1>
+  <p class="lede">What the cohort covered from day 1 to day 26. Part 1 explains the go-to-market ideas in engineering terms. Part 2 is a 2-hour build using Prospeo and Clay. Part 3 is the KT plan.</p>
+  <div class="twocol">
+    <div class="card"><h4>Today's deliverables</h4><p>Market-size screenshots for the strategy doc, a 50-company target list, and a Clay table that qualifies those companies with written reasons. Credit numbers from that run feed the LinkedIn post.</p></div>
+    <div class="card"><h4>How to use it</h4><p>Skim the Part 1 sections you need (ICP, TAM/SAM/SOM, signals, Clay), then work through Part 2. Part 1 in full is the KT material for Deepu.</p></div>
+  </div>
+  <div class="callout warn"><span class="lbl">Screens change</span><p>Clay, Apollo and Prospeo update their interfaces often. Button names here come from what the instructor showed in class in September 2026. If a label differs slightly, look for the closest match; if you're stuck, screenshot the screen and ask Claude.</p></div>
+</header>
+
+<!-- ============ PART 1 ============ -->
+<section class="part" id="part1">
+  <div class="partlabel">Part 1 · Understand</div>
+  <h2>Go-to-market for engineers</h2>
+  <p><b>Go-to-market (GTM)</b> is everything a company does to find customers and turn them into revenue: deciding who to sell to, finding those people, reaching out, and closing deals. A GTM engineer builds the data systems that make that repeatable. The cohort's portfolio project is to do this for one real startup, and Deepu picked <b>Saffron</b>.</p>
+
+  <div class="card">
+    <h4>Saffron in one paragraph</h4>
+    <p>Saffron (Y Combinator, Spring 2026, San Francisco, 3 founders from Jane Street, MIT and Stanford) sells an <b>AI-native technical interview</b>. A job candidate builds a real feature inside the hiring company's own codebase using Claude Code. Saffron records every prompt and edit, marks each line as written by the human or by AI, and 10+ AI reviewers score the work. The hiring company gets a report in hours without spending any engineer time interviewing. Pricing is public: <b>$199/month for 5 assessments, $499/month for 15</b>, custom for enterprise. Their pitch: the usual engineering interview takes 3–4 weeks, 8+ interviewer hours and over $500 per candidate.</p>
+    <p>So Saffron's customers are <b>companies that hire software engineers</b>, and the people who buy are <b>CTOs, VPs of Engineering and heads of recruiting</b>. Everything below is about finding those companies and people systematically.</p>
+  </div>
+
+  <div class="concept" id="c-role">
+    <h3>What a GTM engineer does</h3>
+    <p>Sales teams need a steady supply of the right companies to talk to, at the right moment, with the right message. Traditionally a salesperson spent hours per day researching prospects by hand. A GTM engineer automates that research: pull company data from databases, enrich it, detect events that suggest a company needs the product now, qualify or reject each company, find the right person and a working email address, and hand the result to sales or to an outreach tool.</p>
+    <div class="callout analogy"><span class="lbl">Engineering analogy</span><p>It's a data pipeline whose output is <b>qualified sales conversations</b>. Sources are data vendors (Apollo, LinkedIn). Transformations are enrichment and scoring. The sink is an email or LinkedIn outreach tool, or the CRM. Most bugs are at the joins between systems.</p></div>
+    <p>The instructor's framing: the job today is about 90% <b>outbound</b> (you reach out to people who haven't contacted you). Data sourcing and cleaning is about 80% of the effort. Clay coined the job title in 2023, and it's now one of the fastest-growing roles in B2B software. People who can code earn noticeably more than pure no-code operators.</p>
+  </div>
+
+  <div class="concept" id="c-funnel">
+    <h3>The revenue funnel</h3>
+    <p>Every potential customer moves through a series of stages. Each stage has fewer people than the one before, which is why it's drawn as a funnel.</p>
+    <div class="funnel" role="list">
+      <div role="listitem" style="margin-inline:0">Unknown: everyone in the market who has never heard of you <b>stage 0</b></div>
+      <div role="listitem" style="margin-inline:4%">Lead: a known contact (you have their name and details) <b>stage 1</b></div>
+      <div role="listitem" style="margin-inline:8%">MQL: marketing thinks they're a good fit or showed interest <b>stage 2</b></div>
+      <div role="listitem" style="margin-inline:12%">SQL: sales agrees they're worth a real conversation <b>stage 3</b></div>
+      <div role="listitem" style="margin-inline:16%">Opportunity: an active deal with a dollar value <b>stage 4</b></div>
+      <div role="listitem" style="margin-inline:20%">Closed won / closed lost <b>stage 5</b></div>
+    </div>
+    <div class="callout analogy"><span class="lbl">Engineering analogy</span><p>A state machine with conversion rates between states. Losses compound: if 50% drop at each of four transitions, you keep about 6%. The GTM engineer owns the left side, <b>unknown → lead → first contact</b>, and makes sure replies get routed correctly so nothing is dropped.</p></div>
+    <p><b>MQL</b> = marketing-qualified lead; <b>SQL</b> = sales-qualified lead. The instructor simplifies the end state into three buckets for every company: <b>disqualified</b> (never a fit), <b>nurture</b> (fit, but not now), <b>sell</b> (fit and ready).</p>
+  </div>
+
+  <div class="concept" id="c-icp">
+    <h3>ICP and personas: who you sell to</h3>
+    <p>The <b>ICP (Ideal Customer Profile)</b> describes the <i>company</i> that gets the most value from the product. It has three kinds of attributes:</p>
+    <ul>
+      <li><b>Firmographics</b>: facts about the company. Size (employees), industry, location, funding stage, revenue.</li>
+      <li><b>Technographics</b>: the software they use. For Saffron: do their engineers already use Cursor, Claude Code or Copilot?</li>
+      <li><b>Situation</b>: what's happening there. For Saffron: are they hiring engineers right now?</li>
+    </ul>
+    <p>A <b>persona</b> is the <i>person</i> inside that company you talk to. There are two kinds:</p>
+    <ul>
+      <li><b>Decision maker</b>: signs off on the purchase. For Saffron: CTO, VP Engineering, Head of Talent Acquisition.</li>
+      <li><b>Champion</b>: feels the pain daily and pushes internally. For Saffron: engineering managers and technical recruiters.</li>
+    </ul>
+    <div class="callout analogy"><span class="lbl">Engineering analogy</span><p>The ICP is a <b>schema plus a WHERE clause</b>: <code>company WHERE employees BETWEEN 50 AND 500 AND country='US' AND industry IN (AI, SaaS, DevTools) AND open_swe_roles &gt;= 5</code>. The persona is the join to the people table: <code>people WHERE title SIMILAR TO ('CTO','VP Engineering')</code>. Everything downstream inherits the quality of this spec, just as a bad schema produces precise garbage.</p></div>
+    <p>Two rules from class. Keep job-title <i>keywords</i> and <i>seniority</i> as separate filters (search "engineering" + seniority "VP", not the string "VP of Engineering"). Always add <b>exclude keywords</b>, for example exclude "assistant" or "intern". A tight ICP beats a broad one, because you can write sharper messages and waste fewer credits.</p>
+  </div>
+
+  <div class="concept" id="c-tam">
+    <h3>TAM, SAM, SOM: how big the market is</h3>
+    <p>Three nested numbers. Each is a subset of the one before.</p>
+    <div class="sets" aria-hidden="true">
+      <svg viewBox="0 0 520 250" width="520" role="img">
+        <ellipse cx="260" cy="125" rx="250" ry="118" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.5"/>
+        <ellipse cx="300" cy="140" rx="165" ry="86" fill="var(--surface)" stroke="var(--accent)" stroke-width="1.5"/>
+        <ellipse cx="335" cy="152" rx="82" ry="48" fill="var(--note-soft)" stroke="var(--note)" stroke-width="1.5"/>
+        <text x="40" y="70" fill="var(--ink)" font-family="JetBrains Mono, monospace" font-size="15" font-weight="600">TAM</text>
+        <text x="40" y="90" fill="var(--muted)" font-family="Source Sans 3, sans-serif" font-size="13">could ever buy</text>
+        <text x="160" y="118" fill="var(--ink)" font-family="JetBrains Mono, monospace" font-size="15" font-weight="600">SAM</text>
+        <text x="160" y="138" fill="var(--muted)" font-family="Source Sans 3, sans-serif" font-size="13">we can serve</text>
+        <text x="303" y="150" fill="var(--ink)" font-family="JetBrains Mono, monospace" font-size="15" font-weight="600">SOM</text>
+        <text x="290" y="170" fill="var(--muted)" font-family="Source Sans 3, sans-serif" font-size="13">win this year</text>
+      </svg>
+    </div>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Term</th><th>Meaning</th><th>Saffron example</th></tr></thead>
+      <tbody>
+        <tr><td><b>TAM</b><br>Total Addressable Market</td><td>Every company that could theoretically buy.</td><td>Companies of 50–5,000+ employees in the US, Canada and Europe that regularly hire software engineers.</td></tr>
+        <tr><td><b>SAM</b><br>Serviceable Addressable Market</td><td>The part you can actually reach and serve, given geography, product and price.</td><td>The same, narrowed to companies that are hiring engineers now and already use AI coding tools.</td></tr>
+        <tr><td><b>SOM</b><br>Serviceable Obtainable Market</td><td>The slice you can realistically win soon. It's an argument about market conditions, not just another filter.</td><td>US only, 50–500 employees, AI/DevTools/SaaS, Seed to Series C, 5+ open engineering roles. Reason: a 3-person team, self-serve pricing, one decision maker.</td></tr>
+      </tbody>
+    </table></div>
+    <div class="callout analogy"><span class="lbl">Engineering analogy</span><p>Successive filters on one dataset, where you read <code>COUNT(*)</code> at each step. GTM engineers don't estimate TAM in dollars from a slide deck. They apply the filters in Apollo and <b>screenshot the result count</b>. The instructor's live example: TAM 151,000 companies → SAM 54,000.</p></div>
+    <div class="callout why"><span class="lbl">Why it matters</span><p>If your ICP returns 40 companies, the market is too small. If it returns 400,000, it's too broad to personalize. The instructor insists that the strategy doc includes the filter screenshots, because clients want evidence rather than claims.</p></div>
+  </div>
+
+  <div class="concept" id="c-seg">
+    <h3>Segments: one message per group</h3>
+    <p>You never write one campaign for the whole market. You split it into 2–3 <b>segments</b> that share a pain, and write a different message for each. Saffron's three segments (in the strategy doc):</p>
+    <div class="twocol">
+      <div class="card"><h4>S1 · AI-native startups</h4><p><span class="pill">attack first</span> 50–200 employees. The CTO personally interviews every candidate and engineering time is scarce.</p></div>
+      <div class="card"><h4>S2 · Growth SaaS / infra</h4><p>200–1,000 employees. Many interview loops, inconsistent interviewers, slow hiring.</p></div>
+      <div class="card"><h4>S3 · FinTech / HealthTech</h4><p>Regulated companies. They need auditable, fair evaluation and worry about take-homes written by ChatGPT.</p></div>
+    </div>
+    <div class="callout analogy"><span class="lbl">Engineering analogy</span><p><code>GROUP BY pain_point</code>, then one template per group. Personalization at scale means a sharp template per segment, plus a few per-row variables.</p></div>
+  </div>
+
+  <div class="concept" id="c-signals">
+    <h3>Signals, intent and triggers: why now</h3>
+    <p>Cold outreach becomes warm when there's a reason to reach out <i>this week</i>. The course uses three terms:</p>
+    <dl class="gloss">
+      <dt>Signal</dt><dd>A public fact about the <b>company</b>. Examples: they raised money, they're hiring 12 engineers, a new CTO joined.</dd>
+      <dt>Intent</dt><dd>A <b>person</b> interacting with you. Examples: visited your pricing page, liked the founder's LinkedIn post, requested a demo. This is the warmest kind.</dd>
+      <dt>Trigger</dt><dd>The action <b>you</b> take in response, such as sending a LinkedIn message referencing the event.</dd>
+    </dl>
+    <div class="callout analogy"><span class="lbl">Engineering analogy</span><p>Signals and intent are <b>events</b>; triggers are the <b>handlers</b> subscribed to them. Detection cost varies a lot: a job post is cheap to detect, while "which company visited our pricing page" needs a paid visitor-identification tool like RB2B (US only, for legal reasons).</p></div>
+    <p>Saffron's top signals, ranked by how easy they are to detect: (1) lots of open engineering roles; (2) recent funding; (3) a new engineering or recruiting leader in the last 180 days; (4) job ads mentioning Cursor or Claude Code; (5) a leader posting about AI changing hiring. The instructor's caveats: funding alone is a weak signal, and you should use a signal as <i>context</i> for your message, never recite it ("we saw you raised money" is off-putting). Verify that a signal is true before relying on it.</p>
+  </div>
+
+  <div class="concept" id="c-offer">
+    <h3>Offer and messaging</h3>
+    <p>A good offer follows <b>value → pain → proof</b>. The <i>value</i> is the outcome in the buyer's words. The <i>pain</i> is the problem they already feel. The <i>proof</i> is a reason to believe: a number, a similar customer, or credentials. Then apply the <b>five-word test</b>: would a busy buyer keep reading after the first five words? Openers about yourself ("We are a platform that…") fail. Openers about their world pass.</p>
+    <pre class="block">S1 one-liner: "Your engineers ship with AI. Your interviews don't test it.
+Saffron has candidates build a real feature in your codebase with Claude Code,
+then scores how they used AI, with zero interviewer hours and results the same day."</pre>
+    <p>Benchmarks the instructor says you can quote honestly: LinkedIn connection acceptance about 70% and replies about 30%; email opens over 90% and replies 3–5%. Plain cold email to a generic list gets about 2% replies, which is why signal-based and LinkedIn-first outreach wins today. Never promise a client open or reply rates.</p>
+  </div>
+
+  <div class="concept" id="c-data">
+    <h3>Data sources and data quality</h3>
+    <div class="tablewrap"><table>
+      <thead><tr><th>Source</th><th>Strength</th><th>Weakness</th></tr></thead>
+      <tbody>
+        <tr><td><b>Apollo</b></td><td>Huge company and people database, good filters, generous free tier</td><td>Data goes stale; people-location data lags about 30 days; needs a work email to sign up</td></tr>
+        <tr><td><b>Prospeo</b></td><td>Clean company and people search, department filter, 100 free credits</td><td>Smaller free allowance</td></tr>
+        <tr><td><b>Sales Navigator</b> (LinkedIn)</td><td>The freshest "who works where", because people maintain their own profiles</td><td>No emails, no API, export needs extra tools; paid (free trial available)</td></tr>
+        <tr><td><b>Clay's own search</b></td><td>Convenient inside Clay</td><td>The instructor considers its native data less reliable; use it as a supplement</td></tr>
+      </tbody>
+    </table></div>
+    <p><b>Coverage vs accuracy</b> is the core tradeoff: no single source is right, so you pull from <b>at least three</b>, merge, and dedupe. The dedupe key order taught in class: LinkedIn URL, then email, then full name plus company (never name alone).</p>
+    <h4>Email quality, and why it matters so much</h4>
+    <p>Every email address gets a verification status:</p>
+    <ul>
+      <li><b>Valid</b>: the mailbox exists. Safe to send.</li>
+      <li><b>Invalid</b>: it bounces. Never send.</li>
+      <li><b>Valid catch-all</b>: the company's server accepts any address, and a verifier confirmed this one is probably real. Safe to send.</li>
+      <li><b>Catch-all only</b>: accepted by the server, but nobody may ever read it. Don't send.</li>
+    </ul>
+    <p>Mail providers throttle or block senders whose bounce rate goes above about 2%. A few bad addresses can push your good emails into spam, and you'd blame the copy when the real problem was the data. Also skip companies whose mail server sits behind <b>Mimecast, Proofpoint or Barracuda</b>; these security gateways silently block outreach tools. Expect only about 60% of any raw list to survive cleaning.</p>
+  </div>
+
+  <div class="concept" id="c-enrich">
+    <h3>Enrichment, waterfalls and "only run if"</h3>
+    <p><b>Enrichment</b> means adding columns to a row by asking outside services: start with a company name and end up with domain, size, industry, funding, open jobs, decision makers and verified email.</p>
+    <p>A <b>waterfall</b> tries data provider A. If A finds nothing, it tries B, then C. Order the providers <b>cheapest and most reliable first</b>. You pay per attempt, so a bad order burns credits at scale.</p>
+    <p>A <b>run condition</b> ("only run if") is a per-row guard. For example, only look for an email if the company qualified, and only verify an email if one was found.</p>
+    <div class="callout analogy"><span class="lbl">Engineering analogy</span><p>A waterfall is a fallback chain: <code>a() ?? b() ?? c()</code>. A run condition is a guard clause: <code>if (!row.qualified) return;</code>. Together they keep cost proportional to the good rows, not to the size of the list.</p></div>
+  </div>
+
+  <div class="concept" id="c-clay">
+    <h3>How Clay works</h3>
+    <p><b>Clay</b> is a spreadsheet where each column can be a function call: a lookup against 100+ data providers, an AI research agent, or a formula. You import rows, add columns, and run them on selected rows.</p>
+    <div class="callout analogy"><span class="lbl">Engineering analogy</span><p>A dataframe where each column is a lazily evaluated, metered UDF. The meter is <b>credits</b>. Clay has two: <b>data credits</b> (paid to providers and AI models) and <b>actions</b> (Clay's platform fee per operation). A failed lookup still costs, which is why the house rules below exist.</p></div>
+    <h4>The AI research agent (Claygent) and its model tiers</h4>
+    <p>Clay's AI can browse the web for each row and return a structured answer as JSON. You choose the model per column: <b>Helium</b> (cheapest; fine for single-page lookups), <b>Neon</b> (mid-tier; multi-page), <b>Argon</b> (most thorough and most expensive). Always start with Helium, and escalate only the rows where it failed.</p>
+    <div class="callout warn"><span class="lbl">Clay house rules from the instructor</span>
+      <p>1. Turn <b>auto-run off</b> right after creating a table. Otherwise every edit re-runs and re-charges columns.</p>
+      <p>2. <b>Hide columns, never delete them.</b> Deleted results are gone, or cost about 50 credits to recover.</p>
+      <p>3. <b>Test every column on 10 rows</b> before running all 50.</p>
+      <p>4. Use free <b>formulas</b> for anything deterministic; use AI only for real research.</p>
+      <p>5. After editing an AI prompt, click <b>Generate JSON schema</b> again. Never hand-delete the output fields.</p>
+      <p>6. Lock column names before writing run conditions. Renaming a column later silently breaks every condition that references it.</p>
+    </div>
+    <div class="callout why"><span class="lbl">The bonus point (the LinkedIn post topic)</span><p>Credit efficiency comes from three levers used together: <b>(1)</b> the cheapest model that can do the job, escalating only on failure; <b>(2)</b> "only run if" gates, so expensive columns run only on qualified rows; <b>(3)</b> testing on 10 rows before scaling. Part 2 has you record credit usage so the post can quote real numbers.</p></div>
+  </div>
+
+  <div class="concept" id="c-layers">
+    <h3>The seven layers (the course's map)</h3>
+    <p>The whole 12-week course is organized around these layers. The cohort has covered L1, L2 and part of L3 and L7 so far.</p>
+    <div class="layers">
+      <div class="layer"><div class="n">L1</div><p><b>Data &amp; sourcing</b>: where prospects come from. Apollo, Prospeo, Sales Navigator. <i>Fails when:</i> you target the wrong companies.</p></div>
+      <div class="layer"><div class="n">L2</div><p><b>Enrichment</b>: turn a name into a verified email and context. Clay waterfalls, email verifiers. <i>Fails when:</i> guessed emails bounce and burn your domain.</p></div>
+      <div class="layer"><div class="n">L3</div><p><b>Signals &amp; intent</b>: the "why now". Job posts, funding, leadership changes, RB2B. <i>Fails when:</i> the signal is stale or false.</p></div>
+      <div class="layer"><div class="n">L4</div><p><b>Orchestration</b>: move data between tools. n8n, Make, webhooks. <i>Fails when:</i> a webhook silently drops rows.</p></div>
+      <div class="layer"><div class="n">L5</div><p><b>Execution</b>: the outreach itself. Instantly, HeyReach, Lemlist. <i>Fails when:</i> domains aren't warmed or the copy is generic.</p></div>
+      <div class="layer"><div class="n">L6</div><p><b>CRM &amp; reporting</b>: the source of truth. HubSpot, Salesforce, Attio. <i>Fails when:</i> duplicates make reports lie.</p></div>
+      <div class="layer"><div class="n">L7</div><p><b>AI &amp; agents</b>: research, copy, scripts. Claude, Claude Code, Claygent. <i>Fails when:</i> AI produces confident nonsense at scale with no checks.</p></div>
+    </div>
+    <p>The key idea: <b>value is created inside the layers and destroyed at the handoffs between them.</b></p>
+  </div>
+
+  <div class="concept" id="c-gloss">
+    <h3>Glossary</h3>
+    <dl class="gloss">
+      <dt>B2B</dt><dd>Business-to-business: selling to companies rather than consumers.</dd>
+      <dt>Outbound / inbound</dt><dd>Outbound: you contact prospects first. Inbound: they come to you (ads, content, search).</dd>
+      <dt>Account</dt><dd>A company. "Account list" means a list of companies, not people.</dd>
+      <dt>Lead / contact</dt><dd>A person at an account.</dd>
+      <dt>Firmographics / technographics</dt><dd>Company facts / the company's software stack.</dd>
+      <dt>Qualification</dt><dd>Deciding whether an account is worth reaching out to. In this course it's binary: <i>Outreach</i> or <i>Don't outreach</i>, with a written reason.</dd>
+      <dt>Blacklist / exclusion list</dt><dd>Never contact (competitors) / don't contact for now (current customers, open deals).</dd>
+      <dt>Enrichment</dt><dd>Adding data to a row from outside sources.</dd>
+      <dt>Waterfall</dt><dd>Trying providers one after another until one returns a result.</dd>
+      <dt>Catch-all</dt><dd>A mail server that accepts any address, so plain verification can't confirm a person exists.</dd>
+      <dt>MX record</dt><dd>DNS record naming a domain's mail server. Used to skip Mimecast/Proofpoint-protected companies.</dd>
+      <dt>SPF / DKIM / DMARC</dt><dd>DNS records that prove your emails are really from your domain. The instructor calls email infrastructure 80% of email success.</dd>
+      <dt>Sequencer</dt><dd>A tool that sends multi-step email or LinkedIn campaigns automatically (Instantly, HeyReach).</dd>
+      <dt>CRM</dt><dd>Customer relationship management system: the database of accounts, contacts and deals (HubSpot, Salesforce).</dd>
+      <dt>Credits / actions</dt><dd>Clay's two usage meters: provider and AI cost / platform operations.</dd>
+      <dt>Claygent · Helium / Neon / Argon</dt><dd>Clay's web-research AI and its model tiers, from cheapest to most thorough.</dd>
+      <dt>Sculptor</dt><dd>Clay's assistant that answers questions about your table. Keep it in <i>Analyze</i> mode; <i>Build</i> mode edits the table.</dd>
+      <dt>Loom</dt><dd>Screen-recording tool. The portfolio needs 5 Loom walkthroughs.</dd>
+    </dl>
+  </div>
+</section>
+
+<!-- ============ PART 2 ============ -->
+<section class="part" id="part2">
+  <div class="partlabel">Part 2 · Build</div>
+  <h2>Build: the 2-hour path</h2>
+  <p>Two tools only: <b>Prospeo</b> (companies database) and <b>Clay</b> (enrichment and qualification), both signed in with <code>deepshikhagtme@gmail.com</code>. Deepu's LinkedIn and Loom stay on her existing personal account; nothing here needs them. At each <b>Send to Claude</b> box, paste the screenshot or file into the chat.</p>
+
+  <!-- STEP 1 -->
+  <article class="step" id="s1">
+    <div class="stephead"><span class="stepnum">Step 1 · 5 min</span><h3>Clay credit budget</h3></div>
+    <p class="meta">Clay charges per attempt, including failed ones. The free plan's allowance decides how many rows the AI columns can run on.</p>
+    <ol class="do">
+      <li>Clay → workspace settings → Billing / Usage. Note the data credits and actions remaining.</li>
+    </ol>
+    <div class="callout send"><span class="lbl">Send to Claude</span><p>A screenshot of the balance. Claude sizes the build to fit it.</p></div>
+    <ul class="checks">
+      <li><label><input type="checkbox" id="k1"><span>Credit balance sent</span></label></li>
+    </ul>
+  </article>
+
+  <!-- STEP 2 -->
+  <article class="step" id="s2">
+    <div class="stephead"><span class="stepnum">Step 2 · 20 min</span><h3>Market size screenshots (TAM → SAM → SOM)</h3></div>
+    <p class="meta">Sessions D07–D10. The strategy doc must show the filters and counts, not just claims. You apply filters in stages and screenshot the result count after each stage.</p>
+    <ol class="do">
+      <li>Prospeo → Search → <b>Companies</b>. Use the filter list on the left, not the AI prompt box, so the filters show in the screenshot. On the free plan, Funding, Job Posting and Technologies are locked; the steps below use unlocked proxies instead.</li>
+      <li><b>TAM:</b> Location (company HQ) = US, Canada, UK, Germany, Netherlands, France · Employee Headcount = 51–200, 201–500, 501–1,000, 1,001–5,000 · Industry = Software Development; Technology, Information and Internet; Financial Services; Hospitals and Health Care. 📸 filters + count.</li>
+      <li><b>SAM</b> (add): Headcount by Department → Engineering, at least 20 (a real engineering team) · Headcount Growth → positive growth over the last 6–12 months (a proxy for active hiring, since Job Posting is locked). 📸</li>
+      <li><b>SOM</b> (change): Location = United States only · Headcount = 51–200 and 201–500 only · Founded Year = 2012 or later (a proxy for venture-stage companies, since Funding is locked). 📸</li>
+    </ol>
+    <div class="callout send"><span class="lbl">Send to Claude</span><p>The three screenshots. Claude puts the counts into Strategy Doc v2 and flags filters that make the numbers look off.</p></div>
+    <ul class="checks">
+      <li><label><input type="checkbox" id="k2"><span>TAM / SAM / SOM screenshots sent</span></label></li>
+    </ul>
+  </article>
+
+  <!-- STEP 3 -->
+  <article class="step" id="s3">
+    <div class="stephead"><span class="stepnum">Step 3 · 20 min</span><h3>The 50-account list</h3></div>
+    <p class="meta">Sessions D11–D16 homework: 50 <b>companies</b> (not people) that could buy Saffron, from more than one source, deduplicated, with exactly three columns: Company Name, Domain, Company LinkedIn URL. A real client usually hands over a bare company list, and everything else is derived in Clay, so the list starts minimal on purpose.</p>
+    <ol class="do">
+      <li><b>Prospeo:</b> keep the SOM filters → select 25 companies → Export CSV. Batches of 25 conserve free credits.</li>
+      <li><b>Clay:</b> + New → <b>Find companies</b> → the same filters (US, 51–200 and 201–500 employees, Software / Internet, funded) → take 25 → Export CSV.</li>
+      <li>Send both CSVs. Claude merges them, cleans the domains, removes duplicates and staffing or consulting firms, and returns <code>saffron_50_accounts.csv</code>.</li>
+    </ol>
+    <div class="callout warn"><span class="lbl">Two sources, not three</span><p>The course asks for three sources. Apollo needs a company email (see "Later"). Two is fine for today; mention it to Yogesh.</p></div>
+    <ul class="checks">
+      <li><label><input type="checkbox" id="k3a"><span>Prospeo export (25)</span></label></li>
+      <li><label><input type="checkbox" id="k3b"><span>Clay Find companies export (25)</span></label></li>
+      <li><label><input type="checkbox" id="k3c"><span>Merged 50-account CSV received</span></label></li>
+    </ul>
+  </article>
+
+  <!-- STEP 4 -->
+  <article class="step" id="s4">
+    <div class="stephead"><span class="stepnum">Step 4 · 60 min</span><h3>Clay: qualify the 50 accounts</h3></div>
+    <p class="meta">Sessions D15–D26. Enrich each company, detect Saffron's buying signals, and mark it <b>Outreach</b> or <b>Don't outreach</b> with a reason. Account scoring in this course is binary. Log credits after each AI run in the credit log.</p>
+    <div class="callout warn"><span class="lbl">Clay house rules</span><p>Auto-run off right after import. Hide columns, never delete them once they've run. Run every column on 10 rows before running all 50. Formulas are free, so use them for anything deterministic. After editing an AI prompt, click Generate JSON schema.</p></div>
+    <h4>4a · Import</h4>
+    <ol class="do">
+      <li>New workbook "Saffron GTM" → Import CSV → map the 3 columns → Save without running → <b>auto-run off</b>. Delete any default enrichment columns Clay added before anything runs.</li>
+      <li>Formula column <b>Clean Domain</b>: lowercase, strip protocol, <code>www.</code> and path.</li>
+    </ol>
+    <h4>4b · Company facts</h4>
+    <ol class="do">
+      <li><b>Enrich Company</b> on Clean Domain → output Employee Count, Industry, Country, Latest Funding Date. 10 rows → check → rest.</li>
+    </ol>
+    <h4>4c · Signals</h4>
+    <ol class="do">
+      <li><b>SWE Openings</b>: job-openings enrichment, titles <i>similar to</i> Software / Backend / Full Stack / ML Engineer → output the count.</li>
+      <li><b>Recruiting Team</b>: Find contacts at company (in-sheet) → job function HR / Recruiting / Talent → output the count. A company with 0 is disqualified: it hires through agencies, and agencies don't buy assessment tools.</li>
+      <li><b>AI Tools Mentioned</b>: Use AI, model <b>Helium</b>, only run if SWE Openings ≥ 1, prompt from the build sheet → Generate JSON schema → 10 rows. 📸 credits. Then re-run only the wrong rows on <b>Neon</b> in a second column. 📸 credits. This comparison is the evidence for the LinkedIn post.</li>
+    </ol>
+    <h4>4d · Qualify</h4>
+    <ol class="do">
+      <li>Formula <b>Outreach Eligibility</b>:
+<pre class="block">"Don't outreach" if Recruiting Team = 0, Employees < 50 or > 1000,
+Country != United States, or SWE Openings = 0.
+Else "Outreach" if SWE Openings >= 5 or AI Tools Mentioned = yes.
+Else "Don't outreach".</pre></li>
+      <li>Formula <b>Qualification Reason</b>: the facts that drove the result, e.g. "12 SWE roles · TA team 3 · Cursor in job ads".</li>
+      <li>Filter to Outreach. Roughly 60–70% should pass. If far fewer do, the rules are too strict; send a screenshot and Claude will adjust them.</li>
+    </ol>
+    <div class="callout send"><span class="lbl">Send to Claude</span><p>The Helium and Neon credit screenshots, and the filtered Outreach view with the Reason column visible. Claude then drafts the LinkedIn post and updates the KT plan.</p></div>
+    <ul class="checks">
+      <li><label><input type="checkbox" id="k4a"><span>Imported, auto-run off, Clean Domain</span></label></li>
+      <li><label><input type="checkbox" id="k4b"><span>Enrich Company run</span></label></li>
+      <li><label><input type="checkbox" id="k4c"><span>SWE Openings + Recruiting Team</span></label></li>
+      <li><label><input type="checkbox" id="k4d"><span>AI Tools: Helium vs Neon credits logged</span></label></li>
+      <li><label><input type="checkbox" id="k4e"><span>Eligibility + Reason; filtered view sent</span></label></li>
+    </ul>
+  </article>
+
+  <!-- LATER -->
+  <article class="step" id="s5">
+    <div class="stephead"><span class="stepnum">Later · Deepu</span><h3>After the 2 hours</h3></div>
+    <p class="meta">Not needed for today's deliverables. Details for each are in the Clay build sheet in the Drive folder.</p>
+    <ol class="do">
+      <li><b>LinkedIn post</b> (the bonus point): Claude fills the draft with the credit numbers from Step 4, and Deepu posts it from her own LinkedIn.</li>
+      <li><b>Strategy doc v2</b>: review it, then share it with Yogesh as editor.</li>
+      <li><b>People table</b> (D17–D24): find decision makers and champions at the Outreach companies, run the work-email waterfall cheapest-first, verify, keep only Valid / Valid catch-all.</li>
+      <li><b>Delivery sheet + blacklist</b> (D23–D24): exclude competitors (HackerRank, CodeSignal, Rounds.so, CoderPad, Karat), check with Sculptor in Analyze mode, export.</li>
+      <li><b>Apollo</b> needs a company email: a domain (about ₹800–1,000/yr) plus a free Zoho Mail inbox with MX, SPF, DKIM and DMARC records. That adds the third list source.</li>
+      <li><b>Portfolio</b>: 5 Loom walkthroughs; connection requests to the agency list from the cohort WhatsApp group.</li>
+    </ol>
+  </article>
+</section>
+
+<!-- ============ PART 3 ============ -->
+<section class="part" id="kt">
+  <div class="partlabel">Part 3 · Teach</div>
+  <h2>KT session plan</h2>
+  <p>Two hours with Deepu, ideally Monday evening after her class. Use this page on a shared screen. The goal is for her to explain the pipeline and its reasoning in her own words, not just to see it.</p>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Time</th><th>Block</th><th>What to cover</th></tr></thead>
+    <tbody>
+      <tr><td>0:00–0:30</td><td>GTM for engineers</td><td>Part 1: funnel, ICP and personas, TAM/SAM/SOM with Saffron's real counts, segments, signals vs intent vs triggers, offer structure. Ask her to explain Saffron's SOM back to you.</td></tr>
+      <tr><td>0:30–0:50</td><td>The strategy doc</td><td>Walk through v2. Why 50–500 employees (pricing), why segment S1 goes first, why funding is only a tiebreaker.</td></tr>
+      <tr><td>0:50–1:30</td><td>The Clay table, live</td><td>Column by column: what it does, which session taught it, what it cost. Show one qualified and one disqualified company and read the Reason column aloud.</td></tr>
+      <tr><td>1:30–1:45</td><td>Credit efficiency</td><td>Helium vs Neon numbers, run conditions, test-on-10. Read the LinkedIn post draft together.</td></tr>
+      <tr><td>1:45–2:00</td><td>Her next steps</td><td>The "Later" list: people table, delivery sheet, Apollo, Looms, sharing with Yogesh, questions for Yogesh.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Self-check questions (for the end of the KT)</h3>
+  <ol class="do">
+    <li>What's the difference between TAM, SAM and SOM? Give Saffron's version of each.</li>
+    <li>Who is Saffron's decision maker and who is the champion? Why do both matter?</li>
+    <li>Signal vs intent vs trigger: give one Saffron example of each.</li>
+    <li>Why does the account list start with only three columns?</li>
+    <li>Why merge three data sources instead of trusting one? What's the dedupe key order?</li>
+    <li>Valid catch-all vs catch-all only: which do you send to, and why?</li>
+    <li>What does a waterfall do, and how should the providers be ordered?</li>
+    <li>Why is auto-run off, and why do you hide columns instead of deleting them?</li>
+    <li>How do Helium, Neon and run conditions together keep credit spend proportional to lead quality?</li>
+    <li>If only 25% of the list qualifies, what does that tell you and what do you change?</li>
+  </ol>
+</section>
+
+<footer>
+  Built from the cohort's Gemini transcripts (D01–D26), two guest sessions, the instructor's Clay reference docs and the Learning Guide. Detailed session notes and the build sheet live in <code>~/workspace/deepu/gtme-cohort/</code> and in the "GTM Cohort Catch-up" Drive folder.
+</footer>
+</main>
+</div>
+
+<script>
+(function(){
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.checks input[type=checkbox]'));
+  var KEY = 'saffron-gtme-playbook-checks';
+  var saved = {};
+  try { saved = JSON.parse(localStorage.getItem(KEY) || '{}') || {}; } catch(e) { saved = {}; }
+  function update(){
+    var done = boxes.filter(function(b){ return b.checked; }).length;
+    var t = document.getElementById('progtext'), bar = document.getElementById('progbar');
+    if (t) t.textContent = done + ' of ' + boxes.length + ' build tasks done';
+    if (bar) bar.style.width = (boxes.length ? Math.round(done / boxes.length * 100) : 0) + '%';
+  }
+  boxes.forEach(function(b){
+    if (saved[b.id]) b.checked = true;
+    b.addEventListener('change', function(){
+      saved[b.id] = b.checked;
+      try { localStorage.setItem(KEY, JSON.stringify(saved)); } catch(e) {}
+      update();
+    });
+  });
+  update();
+})();
+</script>

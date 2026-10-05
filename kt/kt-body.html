@@ -1,0 +1,432 @@
+<style>
+.pending{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:600;padding:1px 8px;border-radius:99px;background:var(--warn-soft);color:var(--warn);border:1px solid var(--warn);vertical-align:1px}
+.agenda td:first-child{white-space:nowrap;font-family:var(--mono);font-size:13.5px}
+details.qa{border:1px solid var(--line);border-radius:10px;background:var(--surface);padding:10px 14px;margin-block:8px}
+details.qa summary{cursor:pointer;font-weight:600}
+details.qa p{margin:.5em 0 .2em}
+.funnelnum{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-block:14px}
+.funnelnum div{border:1px solid var(--line);border-radius:10px;padding:10px 12px;background:var(--surface)}
+.funnelnum b{display:block;font-family:var(--display);font-size:24px;font-variant-numeric:tabular-nums}
+.funnelnum span{font-size:13.5px;color:var(--muted)}
+.colstep{border-left:3px solid var(--accent);padding:4px 0 4px 14px;margin-block:14px}
+.colstep h4{margin:0 0 .2em}
+.colstep p{margin:.25em 0}
+.colstep.todo{border-left-color:var(--warn)}
+</style>
+
+<div class="shell">
+<nav class="toc" aria-label="Contents">
+  <details open>
+    <summary>KT contents</summary>
+    <ol>
+      <li><a href="#latest">00 · Latest: D29–D36</a></li>
+      <li><a href="#yesterday">0 · What you missed on 28 Sep</a></li>
+      <li><a href="#agenda">1 · Agenda</a></li>
+      <li><a href="#gtm">2 · GTM in 20 minutes</a></li>
+      <li><a href="#course">3 · The course so far</a></li>
+      <li><a href="#build">4 · The build, step by step</a></li>
+      <li><a href="#credits">5 · Credit efficiency</a></li>
+      <li><a href="#notes">6 · Field notes</a></li>
+      <li><a href="#todo">7 · Your to-do list</a></li>
+      <li><a href="#check">8 · Self-check</a></li>
+      <li><a href="#where">9 · Where everything lives</a></li>
+    </ol>
+  </details>
+</nav>
+
+<main>
+<header class="hero" id="top">
+  <div class="eyebrow">Knowledge transfer · 30 Sep 2026 · before the cohort class</div>
+  <h1>Saffron KT</h1>
+  <p class="lede">Everything the cohort covered from D01 to D26, and the Saffron pipeline built on your accounts over the last two days, with the reasoning behind each decision. By the end you should be able to explain the pipeline in your own words and pick up tomorrow's class without gaps.</p>
+  <div class="callout why"><span class="lbl">How to use this</span><p>Go top to bottom with Abi on a shared screen. The playbook explains concepts in more depth; the build log has every screenshot. Every section is complete as of 29 Sep 2026; the page uses <span class="pending">pending</span> markers only for work that was unfinished when it was drafted, and none remain.</p></div>
+</header>
+
+<!-- 1 -->
+<section class="part" id="latest">
+  <div class="partlabel">Latest classes</div>
+  <h2>D29–D36: from tables to sending email (29 Sep – 2 Oct)</h2>
+  <p>The course has moved from building the list (data, enrichment, signals) to <b>sending</b>. These four days cover what must be in place before the first cold email goes out. Full notes are in Drive: Session Notes → "D29-D36 summary notes". They're written from Gemini's summaries; the full transcripts couldn't be downloaded.</p>
+  <ol class="do">
+    <li><b>D29–30 · Intelligence tables:</b> keep company and people tables separate; domain and LinkedIn URL are mandatory keys; drop profiles under 100 followers. <b>Tier companies by size</b> and map each tier to the right persona. Plan the logic in Claude before building in Clay. A CRM "upsert" means update if the record exists, insert if it doesn't.</li>
+    <li><b>D31–32 · Deliverability is infrastructure:</b> most failures come from domains and data, not copy. <b>Never send from the company's main domain.</b> Set up SPF, DKIM and DMARC, warm up for about 3 weeks (10 → 30 emails a day), use only first-name and company placeholders, let AI write only the opening line, skip "book a meeting" CTAs, and add an opt-out P.S.</li>
+    <li><b>D33–34 · Mailbox maths:</b> 2,000 leads × 6 steps = 12,000 emails a month. At 50 a day × 22 days ≈ 1,100 per mailbox, that's about 12 mailboxes over 3+ domains. <b>Under ~2,000 leads, lead with LinkedIn.</b> Use plain text, no links, follow-ups that branch on behaviour, and email + LinkedIn + phone together.</li>
+    <li><b>D35–36 · Cold email frameworks:</b> 6 emails 2–5 days apart, a final email that offers options (budget, timing or relevance), A/B variants, and narrow micro-campaigns over heavy AI personalisation. Turn off open and link tracking. Clay data work stays the core skill.</li>
+  </ol>
+  <h3>What it means for Saffron</h3>
+  <ul>
+    <li>40 contacts × 6 steps = 240 emails: tiny. By the course's own rule, <b>start on LinkedIn</b>, and add email once a separate sending domain is set up and warmed.</li>
+    <li><b>Homework (D33–34): plan 10 campaigns.</b> Combine 3 segments (AI-native startups, growth SaaS, FinTech/HealthTech) × 2 personas (decision maker, champion) × the strongest signals (hiring surge, AI coding tools, new engineering leader).</li>
+    <li>Email sequence: email 1 = a signal-led opening line plus the S1 offer; emails 2–5 = a different proof point each; email 6 = the "options" close.</li>
+  </ul>
+  <h3>Ask Yogesh</h3>
+  <ul>
+    <li>D33 set up a custom tracking domain, but D35 says to turn tracking off. Which is the default?</li>
+    <li>D31 says avoid selling to software companies, but Saffron's buyers are engineering teams. How does that apply here?</li>
+  </ul>
+</section>
+
+<section class="part" id="yesterday">
+  <div class="partlabel">Before today's class</div>
+  <h2>What you missed on 28 Sep (D27–D28)</h2>
+  <p>Session: <b>Web scraping in Clay + the HTTP API column</b>. Full notes are in the Drive folder under Session Notes.</p>
+  <h3>Things to know</h3>
+  <ol class="do">
+    <li><b>HTTP API column:</b> Clay's general connector to any API that has no native integration. You set the endpoint, method (GET/POST/PUT/DELETE), headers, query parameters, JSON body and auth, then extract fields with a JSON path. Error codes: 400 bad request, 401 not authenticated, 403 not permitted, 404 wrong endpoint, 429 rate limited. For you this is familiar ground; it's a REST client inside a spreadsheet.</li>
+    <li><b>Web scraping ladder, cheapest first:</b> Clay's native scraper → Chrome extension → Claygent → Apify → Zenrows. Claygent is the expensive option at scale (about $200 per 1,000 rows versus about $19/month for Apify), so use it only when a page needs interpretation, not plain field extraction.</li>
+    <li><b>Table hygiene:</b> a finished table should end in outreach-ready messaging, not just an email or LinkedIn URL. Fewer columns, hide unused ones. A clean table should take 2–3 hours, not days.</li>
+    <li><b>The bar went up:</b> at least <b>70%</b> of sourced companies should survive qualification (earlier sessions said 60–70%). Your Saffron table passes 60%.</li>
+    <li><b>Reusable pattern from a classmate's review:</b> a lookup from the People table to the accounts table (matched on company name) to pull company-level messaging into each person's row.</li>
+  </ol>
+  <h3>Homework</h3>
+  <ul>
+    <li>Everyone: work through the shared 400+ GTM tool directory (Yogesh is posting the link in the WhatsApp group) and keep a one-line summary for each tool you try.</li>
+    <li>Nothing was assigned to you by name, since you weren't there. Check with Yogesh whether the tool-directory task applies to you.</li>
+    <li>Related: the "All GTM" sheet in the course Drive is the agency list for the D01 task of sending LinkedIn connection requests to GTM agencies.</li>
+  </ul>
+  <h3>Questions worth asking Yogesh</h3>
+  <ol class="do">
+    <li>My table qualifies 60% (30 of 50). Is that acceptable, or should I loosen the rules to reach 70%?</li>
+    <li>My AI-tools check ran Claygent on Helium for 16 rows (19 credits). Would a native scrape of the careers page be the better first pass?</li>
+    <li>For a free signal like GitHub activity or job-board data, would you add the HTTP API column to the existing accounts table or as a separate source table?</li>
+  </ol>
+</section>
+
+<section class="part" id="agenda">
+  <div class="partlabel">1</div>
+  <h2>Agenda (about 2 hours)</h2>
+  <div class="tablewrap"><table class="agenda">
+    <thead><tr><th>Time</th><th>Block</th><th>Outcome</th></tr></thead>
+    <tbody>
+      <tr><td>0:00–0:20</td><td>GTM in 20 minutes (section 2)</td><td>You can explain funnel, ICP, TAM/SAM/SOM, signals and offer using Saffron's real numbers.</td></tr>
+      <tr><td>0:20–0:30</td><td>The course so far (section 3)</td><td>You know what each session covered and what comes next.</td></tr>
+      <tr><td>0:30–1:15</td><td>The build, live in Clay (section 4)</td><td>You can walk through every column and say why it exists and what it cost.</td></tr>
+      <tr><td>1:15–1:30</td><td>Credit efficiency and the LinkedIn post (section 5)</td><td>You can tell the bonus-point story with real numbers.</td></tr>
+      <tr><td>1:30–1:45</td><td>Field notes and your to-do list (sections 6–7)</td><td>You know the traps and what you own next.</td></tr>
+      <tr><td>1:45–2:00</td><td>Self-check (section 8)</td><td>You answer the 10 questions without looking.</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<!-- 2 -->
+<section class="part" id="gtm">
+  <div class="partlabel">2</div>
+  <h2>GTM in 20 minutes</h2>
+  <p><b>Go-to-market (GTM)</b> is how a company finds customers and turns them into revenue. A <b>GTM engineer</b> builds the data pipeline behind that: which companies to target, why now, who to contact, and what to say. Think of it as an ETL job whose output is qualified sales conversations.</p>
+
+  <h3>Saffron, the company you're building for</h3>
+  <p>Saffron (YC Spring 2026, San Francisco, 3 founders) sells an AI-native technical interview. A candidate builds a real feature in the hiring company's codebase using Claude Code; Saffron records every prompt and edit and 10+ AI reviewers score how they worked. Pricing is self-serve: $199/month for 5 assessments, $499/month for 15. Competitors: HackerRank, CodeSignal, Rounds.so, CoderPad, Karat.</p>
+
+  <h3>The funnel</h3>
+  <p>Unknown → lead → MQL (marketing thinks they fit) → SQL (sales agrees they're worth a conversation) → opportunity (a deal with a value) → closed won or lost. The GTM engineer owns the start: turning unknown companies into qualified, contactable leads.</p>
+
+  <h3>ICP and personas</h3>
+  <p>The <b>ICP</b> (ideal customer profile) describes the company that gets the most value: firmographics (size, industry, location, funding), technographics (tools they use) and situation (are they hiring?). A <b>persona</b> is the person you contact inside it.</p>
+  <ul>
+    <li><b>Decision maker</b>: signs off. For Saffron: CTO, VP Engineering, Head of Talent Acquisition.</li>
+    <li><b>Champion</b>: feels the pain daily and pushes internally. For Saffron: engineering managers, technical recruiters.</li>
+  </ul>
+  <p>Saffron's ICP as built: US tech companies of 50–500 people that hire engineers regularly and already use AI coding tools. The size cap comes from pricing: at $199–$499/month, one engineering leader can buy without procurement.</p>
+
+  <h3>TAM, SAM, SOM with Saffron's real numbers</h3>
+  <p>Three nested market sizes. GTM engineers count them by applying filters in a data tool and reading the result count; the strategy doc needs the screenshots.</p>
+  <div class="funnelnum">
+    <div><b>~54,000</b><span>TAM: could ever buy</span></div>
+    <div><b>~12,000</b><span>SAM: can actually serve</span></div>
+    <div><b>2,921</b><span>SOM: can win this year</span></div>
+  </div>
+  <ul>
+    <li><b>TAM</b> (Prospeo): HQ in US, Canada, UK, Germany, Netherlands, France · 51–5,000 employees · Software Development; Technology, Information and Internet; Financial Services; Hospitals and Health Care.</li>
+    <li><b>SAM</b>: TAM + Engineering &amp; Technical headcount ≥ 20 (a real engineering team) + headcount growth ≥ 1% over 6 months (stand-in for hiring, since Job Posting is locked on the free plan). This also removed the hospitals and clinics that leaked in through the healthcare industry.</li>
+    <li><b>SOM</b>: SAM narrowed to US only, 51–500 employees, founded 2012 or later (stand-in for venture-stage, since Funding is locked). SOM is partly a filter and partly an argument: a 3-person team, self-serve pricing and one decision maker point to US startups of this size.</li>
+  </ul>
+
+  <h3>Segments</h3>
+  <p>You never write one campaign for the whole market. You split it into groups that share a pain and write one message per group. Saffron's: S1 AI-native startups of 50–200 (attack first), S2 growth SaaS and infrastructure of 200–1,000, S3 regulated FinTech and HealthTech.</p>
+
+  <h3>Signal, intent, trigger</h3>
+  <ul>
+    <li><b>Signal</b>: a public fact about the company. Saffron example: 12 open engineering roles, a new CTO.</li>
+    <li><b>Intent</b>: a person interacting with you. Saffron example: their Head of Talent visits the pricing page or likes the founder's post.</li>
+    <li><b>Trigger</b>: the action you take in response. Saffron example: a message to the CTO that references their hiring push.</li>
+  </ul>
+  <p>Use signals as context, never recite them back ("we saw you raised money" reads as surveillance). Verify a signal is true before relying on it. Recent funding is easy to detect but, per Yogesh, a weak signal on its own.</p>
+
+  <h3>The offer: value → pain → proof</h3>
+  <p>Value is the outcome in the buyer's words; pain is what they already feel; proof is why they should believe you. Apply the five-word test: a busy buyer should keep reading after the first five words.</p>
+  <pre class="block">"Your engineers ship with AI. Your interviews don't test it. Saffron has candidates
+build a real feature in your codebase with Claude Code, then scores how they used AI,
+with zero interviewer hours and results the same day."</pre>
+</section>
+
+<!-- 3 -->
+<section class="part" id="course">
+  <div class="partlabel">3</div>
+  <h2>The course so far, on one screen</h2>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Sessions</th><th>Topic</th><th>The one thing to remember</th></tr></thead>
+    <tbody>
+      <tr><td>D01–D02</td><td>What GTM engineering is; the revenue funnel</td><td>~90% outbound today; data is ~80% of the work; never trust one provider.</td></tr>
+      <tr><td>D03–D04</td><td>The seven layers; workspace setup</td><td>Order waterfalls cheapest-first; email infrastructure (SPF/DKIM/DMARC) is 80% of email success.</td></tr>
+      <tr><td>D05–D06</td><td>Adopt a company; ICP</td><td>Strategy doc before tools. Separate title keywords from seniority; always add exclude keywords.</td></tr>
+      <tr><td>D07–D08</td><td>TAM/SAM/SOM; signals and triggers</td><td>Count markets with filters and screenshot them. Signal (account) vs intent (person) vs trigger (your action).</td></tr>
+      <tr><td>D09–D10</td><td>Offer and messaging; strategy brief</td><td>Interrogate the client first. LinkedIn beats cold email for differentiation. Never promise reply rates.</td></tr>
+      <tr><td>D11–D12</td><td>Data landscape; Apollo</td><td>People-first vs company-first. Use 3+ sources; dedupe on LinkedIn URL → email → name + company.</td></tr>
+      <tr><td>D13–D14</td><td>Sales Navigator; data quality</td><td>Valid / invalid / valid catch-all / catch-all only. Skip Mimecast/Proofpoint/Barracuda domains. ~60% of a list survives cleaning.</td></tr>
+      <tr><td>D15–D16</td><td>50-account list; Clay orientation</td><td>Accounts = companies. Auto-run off; hide columns, never delete.</td></tr>
+      <tr><td>D17–D18</td><td>Import; first enrichment</td><td>Real clients give you only company names. Domain → enrich → persona → email → verify.</td></tr>
+      <tr><td>D19–D20</td><td>Formulas; enriched list</td><td>Formulas are free. Account scoring is binary. Use day counts ("180 days") in AI prompts, never months.</td></tr>
+      <tr><td>D21–D22</td><td>Waterfalls; run-only-if</td><td>Helium → Neon → Argon, escalate only on failure. Send only to valid and valid catch-all.</td></tr>
+      <tr><td>D23–D24</td><td>Lookups; dedupe</td><td>Blacklist (permanent) vs exclusion list (temporary). "Similar to" beats "contains". A healthy qualifier passes 60–70%.</td></tr>
+      <tr><td>D25–D26</td><td>Scored pipeline; Claygent</td><td>Lantern example: qualify on hiring pain + has a recruiting team. Regenerate the JSON schema after editing a prompt.</td></tr>
+      <tr><td>Guests</td><td>Rejoice; Kushagra</td><td>Revenue engineers beat tool operators. Proof of work beats courses. Coding agents are rising; don't dump thousands of rows into an agent's context.</td></tr>
+    </tbody>
+  </table></div>
+  <p><b>Portfolio Yogesh expects</b> (D21–D22): strategy doc + Clay table + data pushed to a sequencer (HeyReach/Instantly) + a Claude Code integration + a Make or n8n automation + 5 Loom walkthroughs.</p>
+  <p><b>What comes next in the course</b> (per the Learning Guide): signals at scale (L3), orchestration with n8n/Make and webhooks (L4), execution through Instantly and HeyReach including sending domains and warm-up (L5), CRM and reporting in HubSpot/Attio (L6), and AI agents with Claude Code (L7). The people table and email verification you'll finish this week feed directly into the execution layer.</p>
+</section>
+
+<!-- 4 -->
+<section class="part" id="build">
+  <div class="partlabel">4</div>
+  <h2>The build, step by step</h2>
+
+  <h3>Tools and identity</h3>
+  <p>Work happens in a separate Chrome profile signed in as <code>deepshikhagtme@gmail.com</code>, with Prospeo and Clay accounts on it. LinkedIn and Loom stay on your personal account: LinkedIn allows one account per person. Apollo rejected the gmail ("You cannot sign up with this email address"), so the list was built from two sources instead of three. Apollo can be added later with a custom-domain mailbox.</p>
+
+  <h3>Market sizing</h3>
+  <p>TAM ~54,000 → SAM ~12,000 → SOM 2,921, all in Prospeo, as in section 2. Screenshots are in the Drive folder "Build Evidence" and in the build log.</p>
+
+  <h3>The 50-account list (two sources, 63 rows in, 50 out)</h3>
+  <ul>
+    <li><b>Prospeo</b>: page 1 of the SOM results, 23 exported, 18 kept. All were 250–490 employees because Prospeo sorts by relevance. The export has ~95 columns including active job count and job titles, which later served as a free cross-check.</li>
+    <li><b>Clay Find companies</b>: US, 51–200 employees, software industries, privately held, at least 20 current engineers and at least 5 open engineering roles (7 titles, "similar to"). 196 matches, 40 exported, 32 kept. Without the two hiring filters Clay returned ~31,000 companies led by media brands, job boards and a competitor.</li>
+    <li><b>Merge</b>: a script cleaned domains, deduplicated, dropped non-US HQs (2) and the exclusion list (11), leaving exactly 50 companies with Company Name, Domain and Company LinkedIn URL.</li>
+  </ul>
+  <div class="tablewrap"><table>
+    <thead><tr><th>Excluded</th><th>Reason</th></tr></thead>
+    <tbody>
+      <tr><td>HackerRank, CodeSignal, Rounds.so, CoderPad, Karat, HackerEarth</td><td>Competitors (technical assessment)</td></tr>
+      <tr><td>micro1, Coffeee.io</td><td>Competitor-adjacent (AI interviews / pre-assessed talent)</td></tr>
+      <tr><td>Workable, Sense, Joveo</td><td>Partners, not buyers (hiring and recruiting software)</td></tr>
+      <tr><td>Fusemachines, thinkbridge, GoML, Tech9, Particle41, Velozient</td><td>Services, outsourcing or staffing: they sell engineering capacity rather than hire for their own product</td></tr>
+      <tr><td>Novolo AI</td><td>Hardware incubator and investor</td></tr>
+      <tr><td>Wing</td><td>Alphabet subsidiary; purchase would go through parent procurement</td></tr>
+      <tr><td>Zetheta, Prolific</td><td>HQ outside the US (India, UK); Clay's location filter matches any US office</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3>The Clay table "Saffron | Qualified Pipeline", column by column</h3>
+  <p>Table-level auto-run is set to <b>Manual</b>. Every paid column was tested on 10 rows before running the rest.</p>
+
+  <div class="colstep">
+    <h4>1 · Clean Domain (formula, free)</h4>
+    <p>Clay formulas are JavaScript. Described in English, Clay generated: <code>{{Domain}}?.toLowerCase()?.replace(/^https?:\/\//,"")?.replace(/^www\./,"")?.split("/")?.[0]</code></p>
+  </div>
+  <div class="colstep">
+    <h4>2 · Enrich company (0.5 credits/row, 25 credits for 50 rows)</h4>
+    <p>Input: Clean Domain. Outputs shown: Employee Count, Industry, Country, Founded, Type. One lookup per row; the output toggles only choose which fields become columns and don't change the price.</p>
+    <p>Finding: Clay's search put all Clay-sourced companies in the "51–200" band, yet the enrichment counted Hugging Face at 1,140, Yuno 1,424, Cognition 604. The search uses the size band a company picked on LinkedIn; the enrichment counts actual profiles. Clay writes the country as <code>US</code>.</p>
+  </div>
+  <div class="colstep">
+    <h4>3 · Find active job openings (by Clay, 0.5 credits per row with results)</h4>
+    <p>Chosen over waterfalls and other providers priced at 2–8 credits/row for the same signal. Settings: Job Title Keywords = Software Engineer, Software Developer, Back End Engineer, Front End Developer, Full Stack Developer, Machine Learning Engineer, Artificial Intelligence Engineer. Exclude = Sales, Solutions, Recruiter, Support. Limit = 10 (the allowed range is 1–10; a limit of 50 made every row error, at no cost). Outputs: Job Count and the first Normalized Title.</p>
+    <p>Job Count reports the company's total, not the returned records: LawnStarter returned 10 jobs with a count of 23. Result: 24 companies with 5+ engineering openings, 16 with 1–4, 10 with none.</p>
+    <p>Free cross-check: Prospeo's export listed Sprinto with 23 active jobs, but only one was a software role. So a company's total job count is not an engineering job count, and Clay's zeros were real. That made a paid AI fallback unnecessary.</p>
+  </div>
+  <div class="colstep">
+    <h4>4 · Find contacts at company → People Count (0.5 credits per row with results)</h4>
+    <p>Match companies using LinkedIn URL with the Company LinkedIn URL column. Job Function = Human Resources and Recruiting. Output: People Count. Run condition <code>{{Jobcount}} &gt;= 1</code>, so the 10 companies with no openings are skipped for free. Why it matters: a company with no recruiting team hires through agencies, and agencies don't buy assessment tools (D25–D26).</p>
+    <p>38 of the 40 companies with openings have a recruiting team (19 credits: 0.5 × 38 hits; skipped and "No Profile Found" rows were free). Two came back 0: Avoma (66 employees, believable) and Pinecone (137 employees, 9 openings, almost certainly a data gap).</p>
+  </div>
+  <div class="colstep">
+    <h4>5 · AI coding tools mentioned (Use AI → Web research, Helium)</h4>
+    <p>Only runs on the 16 companies with 1–4 openings. Rows with 5+ already qualify and rows with 0 fail anyway, so running it on all 50 would spend about two-thirds of the credits on answers that can't change a decision. The prompt asks whether job descriptions or the engineering blog mention Cursor, Claude Code, Copilot, Windsurf or Codex, returns JSON with evidence, and says "no" without explicit evidence. Helium on 10 rows first; only the wrong rows are re-run on Neon.</p>
+    <p>Run condition <code>{{Jobcount}} &gt;= 1 &amp;&amp; {{Jobcount}} &lt; 5</code>. Helium: 19 credits (16 rows at 1 credit + 3 re-run). Neon was skipped on purpose: Helium's one failure was formatting (Artisan's answer landed as a sentence in the yes/no field), and setting the field type to True/False plus describing the tools field fixed it on the same cheap model. Clay's default was Argon (3 credits, "recommended"), which on all 50 rows would have cost about 150–190.</p>
+    <p>Found: 10 of 16 mention AI coding tools (ITILITE, Artisan, ButterflyMX, H2O.ai, Cognition, Polymarket, HeyGen, Kalshi, Avoma, Rillet). Cursor and Claude Code come up most. 6 don't (Branch, Observe.AI, Opkey, Bik.ai, Gridware, SuperAnnotate).</p>
+  </div>
+  <div class="colstep">
+    <h4>6 · Outreach Eligibility and Qualification Reason (formulas, free)</h4>
+    <p>Don't outreach if People Count = 0, employees &lt; 50 or &gt; 1,000, country is not US, or Jobcount = 0. Otherwise Outreach if Jobcount ≥ 5 or AI tools = yes. The Reason column lists the facts that drove the result, because vague qualification is the most common learner mistake (D19–D20). Target pass rate 60–70% (D23–D24).</p>
+    <p><b>Outreach: 30 of 50 · Don't outreach: 20 · Pass rate: 60%</b>, the bottom of the instructor's healthy 60–70% range. Failures: 10 with no engineering openings (7 from the Prospeo half), 2 over 1,000 employees (Hugging Face, Yuno), 6 with 1–4 openings and no AI-tool mention, 2 with no recruiting team found (Pinecone, Avoma).</p>
+    <p>The formula preview caught two type bugs before saving: the AI field stores the text "true", so <code>== true</code> never matched; and a stored 0 recruiting team slipped past <code>!{{Peoplecount}}</code>. The fix was <code>Number(x || 0)</code> for counts and <code>String(x).toLowerCase() === "true"</code> for the AI field. Clay auto-named the reason column "Staffing Summary".</p>
+    <p><b>Your call:</b> check Pinecone and Avoma on LinkedIn and override if they do have recruiters.</p>
+  </div>
+  <div class="colstep">
+    <h4>7 · People, emails, verification</h4>
+    <p><b>Find people</b> with Surfe's "Find people at company" (0.1 credits per person found) on the 30 Outreach companies only, up to 3 each. The first 10-row test returned AuditBoard's co-founder, CEO and a TA coordinator: wrong buyers. Removing "Co-Founder" and adding Seniorities (C-Level, Director, Head, Manager, VP) returned the VP and SVP of Engineering. Openmart (1/result) or Pubrio (3/row) would have cost about 90 credits.</p>
+    <p><b>One row per person:</b> "Write each item to new row in other table" → "Send table data" into a new table, Saffron People, carrying 7 company columns. Free. New tables default to Auto-run on, so switch to Manual first. The free plan only makes <b>50 of the 79 rows</b> usable (the Learning Guide says 200).</p>
+    <p><b>Persona formula</b> (Clay named it "Job Seniority"): blank for sales/account/GTM/field/solutions/customer/marketing titles; Decision maker for CTO, VP/SVP/EVP, chief technology/product, head of engineering or talent; Champion for other engineering, talent, recruiting, director or head titles. The preview caught "Svp" and "Accounting" slipping past whole-word matches. 5 of 50 came out blank (Sales Engineering, a sales engineer, Technical Account Management, GTM Engineering, Field CTO) and cost nothing further.</p>
+    <p><b>Work email waterfall</b> across 11 providers (Findymail first), each with its own validation step, only for Decision makers and Champions. Two traps: the run condition was typed as <code>{{Persona}}</code> but the column was named "Job Seniority", so the preview said "Will not run" everywhere (fix: insert columns with <code>/</code>); and in Manual mode you run the <b>final</b> "Work Email" column to run the whole chain.</p>
+    <p><b>People found: 79 at 27 of 30 companies (50 usable on the free plan) · Verified emails: 40 of 45 eligible (89%) · Credits: 9.1 people + 26.5 emails.</b> Findymail found 39, Hunter 1. No provider found Guanning Zhao, Douglas Sloan, Weisi Duan or Nebojša Miletić; Steven Yue's address failed validation and was excluded.</p>
+  </div>
+  <div class="colstep">
+    <h4>8 · Client delivery sheet</h4>
+    <p>Built from the two Clay exports with <code>data/build_delivery_sheet.py</code>, saved to Drive as "Saffron - Client Delivery Sheet". Four tabs: <b>Summary</b> (segment, counts, credits, rules), <b>Contacts</b> (40 verified contacts with persona, LinkedIn, email, which provider found it, and the account's reason), <b>Accounts</b> (all 50 with signals and eligibility) and <b>Follow-ups</b> (25 items: 5 LinkedIn-only contacts, 5 wrong-fit titles, 10 next-batch companies, 3 companies with no people found, Pinecone and Avoma to review).</p>
+    <p>Deviations from the course default: the waterfall's built-in validation replaced a separate Enrichly column, and the Mimecast/Proofpoint/Barracuda MX check has <b>not</b> been done yet. Do it before any sending.</p>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="part" id="credits">
+  <div class="partlabel">5</div>
+  <h2>Credit efficiency (the bonus point)</h2>
+  <p>Yogesh's bonus point was about spending Clay credits well by choosing the right model for the job. The build showed that model choice is one of three levers, and that the other two matter at least as much.</p>
+  <h3>The three levers</h3>
+  <ol class="do">
+    <li><b>Cheapest adequate model or provider.</b> The same signal (job openings) ranged from 0.5 to 8 credits/row across providers. Helium first for AI, Neon only for rows Helium got wrong.</li>
+    <li><b>Run conditions.</b> Expensive columns only fire on rows where the answer can change the decision. The recruiting-team column skips companies with no openings; the AI column runs on 16 rows instead of 50.</li>
+    <li><b>Test on 10 rows.</b> It catches bad settings (the limit error) and shows the real price before you commit.</li>
+  </ol>
+  <h3>Real numbers</h3>
+  <ul>
+    <li>Starting balance: 1,005 credits.</li>
+    <li>Enrich company: 5 credits for the 10-row test, 25 for all 50 (0.5/row as quoted).</li>
+    <li>"Run 40 empty or out-of-date rows" cost 20; "Force run all 50" would have re-charged the tested rows (25).</li>
+    <li>Job openings: 10 rows cost 2.5 credits because only the 5 rows with results were charged. Misses were free. Invalid-input errors were free.</li>
+    <li>Run-condition-skipped rows were free: balance 957.5 after the first 10 recruiting-team rows.</li>
+    <li>A free cross-check against the Prospeo export avoided a paid AI fallback on the 10 zero-opening companies.</li>
+    <li>AI coding-tools column: 19 credits on Helium for the 16 rows that could change a decision, versus about 150–190 for Clay's default Argon on all 50. Neon wasn't needed; fixing the output types solved Helium's formatting miss.</li>
+    <li><b>Whole accounts table: 83 credits</b> (1,005 → 922): Enrich company 25, job openings 20, recruiting team 19, AI column 19, formulas 0.</li>
+    <li>People search: 9.1 credits on Surfe (0.1 per person found) against about 90 on the alternatives.</li>
+    <li>Moving people into their own table and pulling their fields into columns: free.</li>
+    <li>Email waterfall: 26.5 credits for 40 verified emails. The cheapest provider, first in line, found 39 of them; misses were free.</li>
+    <li><b>Whole pipeline: 118.6 credits</b> (1,005 → 886.4) from 50 companies to 30 qualified accounts and 40 verified contacts.</li>
+  </ul>
+  <div class="callout warn"><span class="lbl">Correction to the course material</span><p>The course says Clay "charges per attempt, not per success". That isn't true for every enrichment: here, rows with no result and rows with errors cost nothing. Billing depends on the enrichment and provider, so the reliable habit is to run 10 rows and check the balance.</p></div>
+  <h3>The LinkedIn post (draft, for the bonus point)</h3>
+  <p>Built from these numbers. Edit it into your own voice and post it from your account.</p>
+  <div class="card">
+    <p>This week I built a full account-qualification pipeline in Clay, and the lesson I didn&#x27;t expect was how much the cost depends on choices you make before anything runs.</p>
+    <p>The project: find the right companies and buyers for Saffron (YC S26), an AI-native technical interview platform. I started with 50 target companies and ended with 30 qualified accounts and 40 verified work emails for their engineering and talent leaders. Total cost: 118.6 Clay credits.</p>
+    <p>Four decisions kept it that low:</p>
+    <p>→ Cheapest model that can do the job. Clay pre-selected its most expensive research model (3 credits a row). The cheapest one (1 credit) answered my question just as well once I tightened the output format. When it returned messy answers, fixing the output fields worked; a pricier model wasn&#x27;t needed.</p>
+    <p>→ Only run expensive columns where the answer can change the decision. My AI research ran on 16 of 50 companies, not all 50. It cost 19 credits instead of an estimated 150+.</p>
+    <p>→ Compare providers. The same &quot;find people&quot; step cost 0.1 per person on one provider and 1 to 3 on others. People search came to 9 credits.</p>
+    <p>→ Test on 10 rows first. Twice, the preview caught a bug before it cost anything: a true/false field stored as text, and a filter pointing at a column that didn&#x27;t exist.</p>
+    <p>Also worth knowing: not every Clay enrichment charges per attempt. Some only charge when they find something.</p>
+    <p>#GTMEngineering #Clay #RevOps #Outbound</p>
+  </div>
+</section>
+
+<!-- 6 -->
+<section class="part" id="notes">
+  <div class="partlabel">6</div>
+  <h2>Field notes</h2>
+  <h3>Accounts</h3>
+  <ul>
+    <li>Data vendors (Apollo, Ocean.io) reject free email domains. A custom-domain mailbox fixes it.</li>
+    <li>LinkedIn, Sales Navigator and Loom stay on your real identity. The dedicated gmail is only for tools with credits and trials.</li>
+  </ul>
+  <h3>Prospeo</h3>
+  <ul>
+    <li>Free plan locks Funding, Job Posting, Technologies and Revenue. Stand-ins: Engineering headcount, headcount growth, founded year.</li>
+    <li>Results sort by relevance, which favours bigger companies.</li>
+    <li>The export is rich (~95 columns) and is free signal data for cross-checks. Export is the button at the far right of the results header.</li>
+    <li>Industry filters leak: "Hospitals and Health Care" includes clinics.</li>
+    <li>A company's total job count is not its engineering job count. Read the titles.</li>
+  </ul>
+  <h3>Clay: finding companies</h3>
+  <ul>
+    <li>Raw company data is noisy; the free "people are…" and "job openings are…" filters are where the value is.</li>
+    <li>Job title appears in two filters: employee titles (is there a team?) and job-opening titles (are they hiring now?).</li>
+    <li>Use generic titles with "similar to". Stack-specific titles (SAP, Salesforce, SharePoint) pull in IT-services companies.</li>
+    <li>"Location is United States" means any US office, not HQ.</li>
+    <li>Continue → "Save to new workbook and table" (not "Save to Companies"). Close the "Enrich companies" wizard with × to avoid spending credits on a source table. Export is under Tools → Export → Download CSV.</li>
+    <li>Search filters and enrichments disagree: 11 of 32 companies that passed "5+ openings" in search had fewer than 5 in the enrichment, and size bands differed from counted employees. A search filter narrows a list; it doesn't prove a signal.</li>
+  </ul>
+  <h3>Clay: building the table</h3>
+  <ul>
+    <li>Two auto-run switches: the table-level Manual/Auto-run button, and each column's own Auto-run toggle, which is on by default.</li>
+    <li>Formulas are JavaScript and free.</li>
+    <li>"Run empty or out-of-date rows" avoids re-charging rows already done.</li>
+    <li>Check each enrichment's allowed input ranges (job openings Limit is 1–10).</li>
+    <li>Match the "match using" type to the column you select (LinkedIn URL with a LinkedIn column).</li>
+    <li>Clay writes country as <code>US</code>; formulas must test for that.</li>
+  </ul>
+  <h3>Clay: people and email</h3>
+  <ul>
+    <li>The free plan caps a table at 50 usable rows.</li>
+    <li>New tables default to Auto-run on; "Send table data" and "Add to column" are free.</li>
+    <li>Clay auto-names formula columns, so typed <code>{{Name}}</code> references can point at nothing. Insert columns with <code>/</code> and check "Referenced columns".</li>
+    <li>In Manual mode, run the final waterfall column; it runs every provider and validation step in order.</li>
+    <li>The cheapest provider found 39 of 40 emails; validation kept one unverifiable address out.</li>
+    <li>Tune people search with seniorities, not only titles, then filter sales-flavoured titles with a formula before paying for emails.</li>
+  </ul>
+  <h3>Judgment</h3>
+  <ul>
+    <li>Screen every export by hand and record each exclusion with its reason. Filters let through competitors, services firms, subsidiaries and partners.</li>
+    <li>HQ location isn't where the team or buyer sits; several US-registered companies have engineering in India.</li>
+  </ul>
+</section>
+
+<!-- 7 -->
+<section class="part" id="todo">
+  <div class="partlabel">7</div>
+  <h2>Your to-do list after the KT</h2>
+  <ol class="do">
+    <li><b>Strategy Doc v2</b>: open it in the Drive folder, paste the TAM/SAM/SOM screenshots from "Build Evidence" into the three blanks, read it once against the "competent stranger" test, then share with Yogesh as editor.</li>
+    <li><b>LinkedIn post</b>: edit the draft into your own voice and post it from your account. Check the WhatsApp group for whether Yogesh or Stable GTM should be tagged.</li>
+    <li><b>5 Looms</b> (portfolio requirement), 3–5 minutes each:
+      <ul>
+        <li><b>Strategy doc</b>: who Saffron sells to and why; decision maker vs champion; TAM ~54K → SAM ~12K → SOM 2,921 and the filters; why 50–500 employees; segments; the S1 offer.</li>
+        <li><b>List build</b>: why companies first; Prospeo vs Clay search; the hiring filters that cut ~31,000 to 196; screening and every exclusion reason; merge to 50.</li>
+        <li><b>Enrichment and signals</b>: Clean Domain formula; Enrich company and the size-band finding; job openings settings and the total-vs-engineering finding; recruiting team and why it disqualifies.</li>
+        <li><b>Qualification and delivery</b>: the eligibility rules; the Reason column; pass rate vs the 60–70% benchmark; people, emails and verification; the delivery sheet.</li>
+        <li><b>Credit efficiency</b>: the three levers with real numbers; 0.5 vs 8 credits for the same signal; gating the AI column to 16 rows; the "charged per attempt" correction.</li>
+      </ul>
+    </li>
+    <li><b>Before any sending</b>: run the MX check and drop contacts whose company mail goes through Mimecast, Proofpoint or Barracuda (the delivery sheet has not had this check).</li>
+    <li><b>Follow-ups tab of the delivery sheet</b>:
+      <ul>
+        <li>Reach 5 people on LinkedIn instead of email: Guanning Zhao (DataVisor), Douglas Sloan (AuditBoard), Weisi Duan (Kalshi), Nebojša Miletić (Gigs), and Steven Yue (SandboxAQ; his address failed validation).</li>
+        <li>Next batch of 10 Outreach companies whose people sit beyond the free plan's 50-row limit: MoonPay, Artisan, H2O.ai, Ema, Lightning AI, Phantom, Suno, Nooks, RevenueCat, Rillet. Needs a paid plan or a second people table.</li>
+        <li>Find people manually at Cognition, Polymarket and RoboMQ (the people search returned nobody matching).</li>
+        <li>Review Pinecone (disqualified only because no recruiter was found) and Avoma (AI tools but 66 employees, no TA team) and override if LinkedIn says otherwise.</li>
+      </ul>
+    </li>
+    <li><b>Agency connections</b>: send connection requests (no message) to the agencies on the list from the cohort WhatsApp group (D01–D02).</li>
+    <li><b>Apollo</b>, when you have time: buy a cheap domain, set up a Zoho mailbox with MX, SPF, DKIM and DMARC, sign up to Apollo, and add it as the third list source.</li>
+    <li><b>Questions for Yogesh</b>:
+      <ul>
+        <li>D07–D08 described 1–10 account scoring, D19–D20 said binary. Is binary the rule?</li>
+        <li>Is Clay's own company search acceptable as a list source (D15–D16 said no, D25–D26 used it)?</li>
+        <li>The Learning Guide says 100 accounts; class said 50. Confirm 50.</li>
+        <li>Is applying the Lantern qualification pattern to Saffron acceptable instead of building the Lantern table?</li>
+      </ul>
+    </li>
+  </ol>
+</section>
+
+<!-- 8 -->
+<section class="part" id="check">
+  <div class="partlabel">8</div>
+  <h2>Self-check</h2>
+  <p>Answer out loud first, then open the answer.</p>
+  <details class="qa"><summary>1. What are TAM, SAM and SOM for Saffron, with numbers?</summary><p>TAM ~54,000: companies of 51–5,000 in six countries and four industries that could ever buy. SAM ~12,000: those with 20+ engineers and a growing headcount. SOM 2,921: US-only, 51–500, founded 2012 or later, which a 3-person team with self-serve pricing can realistically win.</p></details>
+  <details class="qa"><summary>2. Who is Saffron's decision maker, who is the champion, and why do you need both?</summary><p>Decision maker: CTO, VP Engineering or Head of TA, who signs. Champion: engineering managers and technical recruiters, who feel the interview load daily and push internally. A fit company with nobody to push or sign goes nowhere.</p></details>
+  <details class="qa"><summary>3. Give a Saffron example of a signal, an intent and a trigger.</summary><p>Signal: 12 open engineering roles. Intent: their Head of Talent visits Saffron's pricing page. Trigger: a message to the CTO referencing the hiring push.</p></details>
+  <details class="qa"><summary>4. Why does the account list start with only three columns?</summary><p>Real clients usually hand over a bare list of company names. Starting minimal practices deriving everything else yourself in Clay.</p></details>
+  <details class="qa"><summary>5. Why not trust one data source, and how do you dedupe?</summary><p>Every source has gaps and stale data (coverage vs accuracy); combining sources raises coverage. Dedupe on LinkedIn URL, then email, then full name plus company, never name alone.</p></details>
+  <details class="qa"><summary>6. Valid catch-all vs catch-all only: which do you send to?</summary><p>Only valid and valid catch-all. Catch-all-only addresses are accepted by the server but may never reach a person, and bounces above ~2% damage the sending domain.</p></details>
+  <details class="qa"><summary>7. Why exclude companies with no recruiting team?</summary><p>They hire through agencies, and agencies partner with tools rather than buy them. The company isn't the buyer.</p></details>
+  <details class="qa"><summary>8. What are Clay's two auto-run switches, and why keep both off?</summary><p>The table-level Manual/Auto-run button and each column's own Auto-run toggle (on by default). With either on, edits or new columns can run on every row and spend credits you didn't plan to.</p></details>
+  <details class="qa"><summary>9. How did the build keep AI spend proportional to lead quality?</summary><p>The AI column only runs on the 16 companies with 1–4 openings, where its answer can change the decision; Helium runs first and Neon only re-runs the rows Helium got wrong; everything is tested on 10 rows.</p></details>
+  <details class="qa"><summary>10. If only 25% of the list qualifies, what does that tell you?</summary><p>The rules are too strict or the signals too narrow. The benchmark is 60–70%, so loosen or add a qualifying signal rather than accept the loss.</p></details>
+</section>
+
+<!-- 9 -->
+<section class="part" id="where">
+  <div class="partlabel">9</div>
+  <h2>Where everything lives</h2>
+  <ul>
+    <li><b>Playbook</b> (concepts + build guide): <a href="https://claude.ai/artifact/CM7zG8Jomdshb8pfFosbZW">claude.ai/artifact/CM7zG8Jomdshb8pfFosbZW</a></li>
+    <li><b>Build log</b> (every step with screenshots and field notes): <a href="https://claude.ai/artifact/BoFqdK241doAAZc5NHpRDN">claude.ai/artifact/BoFqdK241doAAZc5NHpRDN</a></li>
+    <li><b>Drive folder "GTM Cohort Catch-up"</b> (Strategy Doc v2, Saffron - Client Delivery Sheet, KT Pack, LinkedIn Post draft, master notes, 19 session notes, build sheet, credit log, 50-account sheet, Build Evidence): <a href="https://drive.google.com/drive/folders/1tq9Z9VRXfo366aSE9X9VroCUzCvNiWjw">drive.google.com/drive/folders/1tq9Z9VRXfo366aSE9X9VroCUzCvNiWjw</a></li>
+    <li><b>Clay</b>: workbook "Saffron | Qualified Pipeline" in the Saffron folder (deepshikhagtme account); source table "Software Companies, US, 51-200 Employees" in the same folder.</li>
+  </ul>
+</section>
+
+<footer>Prepared from the cohort's session notes (D01–D26, two guest sessions, two recorded trainings), the Learning Guide and the Saffron build log.</footer>
+</main>
+</div>
