@@ -1,6 +1,6 @@
 # HANDOFF: Deepu's GTM Engineering cohort catch-up
 
-Read this first in any new session. It's the single source of truth for what exists, where it lives, how it was built, and what's still open. Last updated: 5 Oct 2026 (cohort at D38).
+Read this first in any new session. It's the single source of truth for what exists, where it lives, how it was built, and what's still open. Last updated: 6 Oct 2026 (cohort at D38).
 
 **This is a git repo:** `git@github.com:DeeepshikhaRaghuvanshi/gtme-cohort.git` (private), accessed over SSH with plain git; no gh CLI. Pull before you start, and commit and push after every milestone; the rules are in CLAUDE.md. Paths like `/mnt/c/Users/Abi M/...`, the rclone remotes and the local Piper binary only exist on **Abi's WSL machine**. On another machine, use the Google Drive web UI or connector for Drive, and run `scripts/setup_video_tools.sh` for the video tools.
 
@@ -25,7 +25,8 @@ Folder: https://drive.google.com/drive/folders/1tq9Z9VRXfo366aSE9X9VroCUzCvNiWjw
 - **KT Pack - Saffron** (Google Doc): https://docs.google.com/document/d/1iRNGee02RezXl-XNMse0UaERIm-fb9Q7cjOSkUqmxWY
 - **Saffron - Client Delivery Sheet** (Google Sheet): https://docs.google.com/spreadsheets/d/1GYHrImz2G2mTps-sG9iZRxIKlayI84voEAyA3on5djY
 - **LinkedIn Post - Draft** (Google Doc): https://docs.google.com/document/d/1DF_4a26ABSIbOnAaFQHY0WYbHyjxwp4HP_T-0NejyBM
-- **Homework - D37-D38 HeyReach CHRO Campaign** (current homework): https://docs.google.com/document/d/10ArxuLqzYtNZMVl3LPMO-VCoKLGuc4d0vmNHjAZoeSA
+- **Homework - D33-D36 Instantly Cold Email Campaign** (current homework; teaches D29–D36 in depth, then the Instantly build): https://docs.google.com/document/d/1YYEUCLl4gBWXHiZ0hLk-XsM_mUN1PSZdZR55yckO1ro
+- **Homework - D37-D38 HeyReach CHRO Campaign**: https://docs.google.com/document/d/10ArxuLqzYtNZMVl3LPMO-VCoKLGuc4d0vmNHjAZoeSA
 - **Before Today's Class - 28 Sep Catch-up**: https://docs.google.com/document/d/13LuTb06qT1pqlWurzo2oySS0HYwr8i51pijHc5s5a24
 - README - Start Here · 00 Cohort Master Notes · Strategy Doc - Saffron v2 · Clay Build Sheet · Clay Credit Log · Saffron 50 Accounts · Saffron Accounts - Qualified.csv
 - **Session Notes/**: 23 docs (D01–D36, guests, videos, reference guides)
@@ -45,7 +46,8 @@ https://drive.google.com/drive/folders/1xJu8MQoRouZqeaNaBxRTyJzww5tqjRrN
 ### Repo / local workspace (on Abi's machine: ~/workspace/deepu/gtme-cohort)
 - `HANDOFF.md`: this file
 - `source/`: course docs extracted to markdown (Gemini notes include full transcripts for D01–D28), plus local transcripts of the Sales Navigator and Instantly videos, the reference guides, and the Learning Guide
-- `homework/`: guides written for Deepu (current: D37–D38 HeyReach CHRO campaign)
+- `homework/`: guides written for Deepu (D33–D36 Instantly cold-email campaign; D37–D38 HeyReach CHRO campaign)
+- `research/instantly/`: research behind the Instantly guide: the shared brief, Claude findings (161 cited), Gemini 3.1 Pro findings (via `agy`), Gemini's review of Claude, and `verification.md` (each claim agreed / resolved / flagged)
 - `docs/remote-access-setup.md`: the paused remote-access plan and how to resume it
 - `notes/`: `00-cohort-master-notes.md` (one-page map, rules, glossary, tracker), one notes file per session, `D29-D36_summary-notes.md` (written from Gemini summary screenshots only) and `D27-D28_catchup-brief.md`
 - `strategy/strategy-doc-saffron-v2.md`: v1 plus SOM, segments, personas, ranked signals, offers and filters, with the real TAM/SAM/SOM counts
@@ -138,6 +140,7 @@ https://drive.google.com/drive/folders/1xJu8MQoRouZqeaNaBxRTyJzww5tqjRrN
 - **The Google Drive MCP connector** is signed into the personal account, and its search can't see files newly added to the shared course folder.
 - **Headless Chromium:** always pass the keyring-safe flags from the global CLAUDE.md.
 - **faster-whisper** runs on the GPU (GTX 1650 Ti 4 GB) with medium.en int8_float16.
+- **Gemini second opinion (`agy`, Antigravity CLI):** `agy --model gemini-3.1-pro-high --print-timeout 1700s -p "<prompt>" > out.md`. Put every flag *before* `-p`, because `-p` takes the next argument as the prompt. `agy models` lists the models (fallback: `gemini-3.8-flash-high`). Print mode can web-search and read repo files without permission prompts. Its citations tend to be bare domains, so check its facts against primary pages. Homework guides get both a Claude and a Gemini research track, cross-verified (see `research/instantly/`).
 
 ## 7b. Remote access for Deepu (Abi's WSL machine): ON HOLD, see docs/remote-access-setup.md
 - A separate Linux user **`deepu`** runs a **VS Code tunnel** named `saffron-gtm`, as the systemd service `code-tunnel-deepu`.
@@ -148,14 +151,16 @@ https://drive.google.com/drive/folders/1xJu8MQoRouZqeaNaBxRTyJzww5tqjRrN
 - It only works while the Windows PC is on and WSL is running. Claude Code in her terminal uses her own Claude login.
 
 ## 8. Open items
-**Current homework (D37–D38): `homework/D37-D38_heyreach-chro-campaign.md`.** Saffron × CHRO LinkedIn campaign in HeyReach: 4 context-segment micro-campaigns, configured but not live. Also: optimise her LinkedIn profile, watch last week's recordings, and review the segmentation from the previous session.
+**Current homework (D33–D36): `homework/D33-D36_instantly-cold-email-campaign.md`.** Part A teaches D29–D36 and the Instantly training video in depth (Deepu missed them); Part B covers the 10-campaign plan, Saffron's deliverability plan, Clay lead prep (Tier, Campaign, Opener, QC), and 3 micro-campaigns in Instantly (AI-in-JDs 10, Hiring surge 14, Growing team 16) saved as drafts, with all copy and a Loom outline. Built from two research tracks (Claude + Gemini 3.1 Pro via agy), cross-verified. Key catches: the trial has no A/Z testing (B variants need Growth at $47), and the trial account is deleted after 14 days; Instantly recommends 30/day per mailbox and a 90% health score (class: 50 and 80%).
+
+**Also open (D37–D38): `homework/D37-D38_heyreach-chro-campaign.md`.** Saffron × CHRO LinkedIn campaign in HeyReach: 4 context-segment micro-campaigns, configured but not live. Also: optimise her LinkedIn profile, watch last week's recordings, and review the segmentation from the previous session.
 
 **Remote access:** paused 5 Oct. The script is ready but nothing has been run; resume from docs/remote-access-setup.md.
 
 **For Deepu:**
 - Share Strategy Doc v2 with Yogesh; paste the TAM/SAM/SOM screenshots from Build Evidence.
 - Post the LinkedIn post from her own account (check whether the bonus point expects tagging Yogesh or Stable GTM).
-- **D33–34 homework: plan 10 Saffron campaigns** (3 segments × 2 personas × top signals). Claude offered to draft it; not done yet.
+- **D33–34 homework: plan 10 Saffron campaigns**: drafted in the Instantly guide (B1).
 - 5 Loom walkthroughs (outlines are in the KT pack) and a personal Loom (D29–30).
 - LinkedIn connection requests to the agencies in "All GTM" (Agencies tab).
 - Work the Follow-ups tab; run the MX check before any sending.

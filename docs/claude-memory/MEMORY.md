@@ -3,3 +3,4 @@
 - [Lean guides, one step at a time](feedback-lean-guides.md) — experienced engineers; fast path; one tool step per message; say which identity each tool uses
 - [Verify, then independent review](feedback-verify-and-review.md) — inspect real output before "done"; big deliverables get a top-model review first
 - [Check existing setup first](feedback-check-existing-setup.md) — read ~/workspace setup docs/ssh/gitconfig before installing tools; GitHub = SSH via includeIf, no gh
+- [Homework guides: depth + Gemini cross-check](feedback-homework-guides.md) — teach missed class topics in depth; Claude + agy Gemini 3.1 Pro research, cross-verified; confirm which assignment first

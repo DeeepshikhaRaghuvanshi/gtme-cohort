@@ -257,6 +257,15 @@ figcaption{font-size:14px;color:var(--muted)}
     <li><b>Rules need a human pass on edge cases.</b> Pinecone (9 SWE openings, 137 employees) failed only because the recruiting-team lookup found nobody, most likely a data gap. Check LinkedIn and override by hand.</li>
     <li><b>HQ location ≠ where the team or buyer sits.</b> Several US-registered companies have engineering mostly in India. They're still valid for Saffron, but location filters don't tell the whole story.</li>
   </ul>
+  <h3>Instantly (from the D33–D36 research, 6 Oct)</h3>
+  <ul>
+    <li><b>The free trial can't do the "B variants" step.</b> Instantly's plan table lists A/Z testing as "No" on the 14-day trial; it needs Growth ($47/mo). An un-upgraded trial account is deleted when the trial ends, so take screenshots and record the Loom inside the 14 days.</li>
+    <li><b>Instantly's own numbers are stricter than the class's:</b> 30 campaign + 10 warm-up emails per mailbox a day (not 50), ready at a health score above 90% (class: pull below 80%), and Campaign Slow Ramp adds 2 a day (not 20/30/40/50 by week).</li>
+    <li><b>Subsequences can't be shown in a no-launch build.</b> They need Hyper Growth ($97) and the tab only appears after launch.</li>
+    <li><b>Lead CSV headers must be 20 characters or fewer.</b> Our Clay export's first column, "Rows from: saffron_50_accounts", would fail; export a trimmed column set.</li>
+    <li><b>Leave "Stop on auto-reply" off</b> and turn on auto-tagging: AI Smart Pause then pauses a lead on an out-of-office and resumes on the return date, instead of ending their sequence.</li>
+    <li><b>Google's sender requirements don't cover mail sent to Google Workspace accounts</b>, which is where most B2B prospects are. Workspace and security gateways still filter, so set up SPF/DKIM/DMARC anyway.</li>
+  </ul>
 </section>
 
 <section class="part">

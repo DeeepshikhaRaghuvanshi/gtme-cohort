@@ -12,6 +12,7 @@ metadata:
   - Course video: file id 1QRCvu_BWdcr9HMB9yA7XQzd65-vm4-Fh (keep the filename "Saffron - Course Summary Video.mp4" so the link survives re-uploads)
   - KT Pack doc: 1iRNGee02RezXl-XNMse0UaERIm-fb9Q7cjOSkUqmxWY
   - Delivery sheet: 1GYHrImz2G2mTps-sG9iZRxIKlayI84voEAyA3on5djY
+  - Homework D33–36 Instantly cold-email doc (current): 1YYEUCLl4gBWXHiZ0hLk-XsM_mUN1PSZdZR55yckO1ro
   - Homework D37–38 HeyReach CHRO doc: 10ArxuLqzYtNZMVl3LPMO-VCoKLGuc4d0vmNHjAZoeSA
   - HANDOFF doc: 1ySxKAbFhf21HnWZ-i84lG1QbTSZ7FEJzie4M2yS_AkE
   - LinkedIn post doc: 1DF_4a26ABSIbOnAaFQHY0WYbHyjxwp4HP_T-0NejyBM
